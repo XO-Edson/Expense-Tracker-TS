@@ -25,7 +25,9 @@ export default function useFireBaseAuth() {
     const [authUser, setAuthUser] = useState();
     const [isLoading, setIsLoading] = useState(true);
 
-
+    const onAuthStateChanged = async (user) => {
+    
+}
     useEffect(() => {
         
         onAuthStateChanged(auth,onAuthStateChanged)
