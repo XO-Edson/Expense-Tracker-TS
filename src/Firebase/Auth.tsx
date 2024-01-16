@@ -1,15 +1,18 @@
-import { onAuthStateChanged } from "firebase/auth";
+import { User, onAuthStateChanged } from "firebase/auth";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import { auth } from "./Firebase";
 
-type authUser = {
-  user?: string;
-  isLoading: boolean;
+type authUserType = {
+  uid: string;
+  email: string;
 };
 
 type contextData = {
-  authUser: authUser;
-  auth: () => void;
+  authUser: authUserType | null;
+  auth: {
+    authUser: authUserType | null;
+    isLoading: boolean;
+  };
 };
 
 type AuthUserProviderProp = {
@@ -17,32 +20,54 @@ type AuthUserProviderProp = {
 };
 
 const AuthUserContext = createContext<contextData>({
-    authUser: undefined,
-    auth:void
+  authUser: {
+    uid: "",
+    email: "",
+  },
+  auth: {
+    authUser: null,
+    isLoading: true,
+  },
 });
 
 export default function useFireBaseAuth() {
-    const [authUser, setAuthUser] = useState();
-    const [isLoading, setIsLoading] = useState(true);
+  const [authUser, setAuthUser] = useState<authUserType | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-    const onAuthStateChanged = async (user) => {
-    
-}
-    useEffect(() => {
-        
-        onAuthStateChanged(auth,onAuthStateChanged)
-    },[])
+  const onAuthStateChangedCallBack = async (user: User | null) => {
+    setIsLoading(true);
+
+    if (!user) {
+      setAuthUser(null);
+      setIsLoading(false);
+      return;
+    }
+
+    setAuthUser({
+      uid: user.uid,
+      email: user.email || "",
+    });
+
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, onAuthStateChangedCallBack);
+
+    return () => {
+      unsubscribe();
+    };
+  }, [onAuthStateChanged, auth]);
+
+  return { authUser, isLoading };
 }
 
 export const AuthUserProvider = ({ children }: AuthUserProviderProp) => {
- 
-
   const auth = useFireBaseAuth();
+
   return (
-    <AuthUserContext.Provider value={{ auth }}>
+    <AuthUserContext.Provider value={{ authUser: auth.authUser, auth }}>
       {children}
     </AuthUserContext.Provider>
   );
 };
-
-
