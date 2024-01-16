@@ -30,10 +30,10 @@ const AuthUserContext = createContext<contextData>({
   },
 });
 
-export default function useFireBaseAuth() {
-  const [authUser, setAuthUser] = useState<authUserType | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+const [authUser, setAuthUser] = useState<authUserType | null>(null);
+const [isLoading, setIsLoading] = useState(true);
 
+export function useFireBaseAuth() {
   const onAuthStateChangedCallBack = async (user: User | null) => {
     setIsLoading(true);
 
@@ -71,3 +71,5 @@ export const AuthUserProvider = ({ children }: AuthUserProviderProp) => {
     </AuthUserContext.Provider>
   );
 };
+
+export default AuthUserContext;
