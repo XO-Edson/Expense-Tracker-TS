@@ -1,5 +1,11 @@
 import { User, onAuthStateChanged } from "firebase/auth";
-import { ReactNode, createContext, useEffect, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { auth } from "./Firebase";
 
 type authUserType = {
@@ -7,8 +13,7 @@ type authUserType = {
   email: string;
 };
 
-type contextData = {
-  authUser: authUserType | null;
+type ContextData = {
   auth: {
     authUser: authUserType | null;
     isLoading: boolean;
@@ -19,21 +24,20 @@ type AuthUserProviderProp = {
   children: ReactNode;
 };
 
-const AuthUserContext = createContext<contextData>({
-  authUser: {
-    uid: "",
-    email: "",
-  },
+const AuthUserContext = createContext<ContextData>({
   auth: {
-    authUser: null,
+    authUser: {
+      uid: "",
+      email: "",
+    },
     isLoading: true,
   },
 });
 
-const [authUser, setAuthUser] = useState<authUserType | null>(null);
-const [isLoading, setIsLoading] = useState(true);
-
 export function useFireBaseAuth() {
+  const [authUser, setAuthUser] = useState<authUserType | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
   const onAuthStateChangedCallBack = async (user: User | null) => {
     setIsLoading(true);
 
@@ -57,7 +61,7 @@ export function useFireBaseAuth() {
     return () => {
       unsubscribe();
     };
-  }, [onAuthStateChanged, auth]);
+  }, []);
 
   return { authUser, isLoading };
 }
@@ -66,10 +70,20 @@ export const AuthUserProvider = ({ children }: AuthUserProviderProp) => {
   const auth = useFireBaseAuth();
 
   return (
-    <AuthUserContext.Provider value={{ authUser: auth.authUser, auth }}>
+    <AuthUserContext.Provider value={{ auth }}>
       {children}
     </AuthUserContext.Provider>
   );
 };
 
 export default AuthUserContext;
+
+/* HOOK */
+
+const useAuth = () => {
+  const { auth } = useContext(AuthUserContext);
+
+  return auth;
+};
+
+export { useAuth };
