@@ -7,6 +7,10 @@ const SignUpUI = () => {
   const navigate = useNavigate();
   const { supabase } = useSupabase();
 
+  const guestSignIn = () => {
+    navigate("/dashboard");
+  };
+
   useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
@@ -21,10 +25,22 @@ const SignUpUI = () => {
   }, [navigate, supabase.auth]);
 
   return (
-    <div>
-      <h1>Expense tracker</h1>
-      <Auth supabaseClient={supabase} theme="dark" providers={["google"]} />
-    </div>
+    <section className="signup">
+      <h1>Welcome</h1>
+      <h3>Expense tracker</h3>
+      <Auth
+        supabaseClient={supabase}
+        theme="dark"
+        providers={["google"]}
+        /* appearance={{
+          extend: false,
+          className: {
+            input: "signup-input",
+          },
+        } }*/
+      />
+      <button onClick={guestSignIn}>Sign in as Guest</button>
+    </section>
   );
 };
 

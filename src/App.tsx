@@ -5,8 +5,6 @@ import { Route, Routes } from "react-router-dom";
 function App() {
   return (
     <div>
-      <h1>Welcome</h1>
-
       <Routes>
         <Route path="/" element={<SignUpUI />} />
         <Route path="/dashboard" element={<Dashboard />} />
