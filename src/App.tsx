@@ -1,4 +1,5 @@
 import Dashboard from "./Components/Dashboard";
+
 import SignUpUI from "./Components/SignUpUI";
 import { Route, Routes } from "react-router-dom";
 
