@@ -37,8 +37,22 @@ const DashboardHeader = ({ userEmail }: DashboardHeaderProps) => {
 
   const [accExpenses, setAccExpenses] = useState<ExpenseType[]>([]);
 
+  const balance = (): IncomeType | undefined => {
+    if (income.amount !== undefined && expense.amount !== undefined) {
+      return { amount: income.amount - expense.amount, incomeCategory: "" };
+    } else {
+      return undefined;
+    }
+  };
+
   const addExp = () => {
     setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
+    setExpense({ amount: undefined, expenseCategory: "" });
+
+    const newIncome = balance();
+    if (newIncome !== undefined) {
+      setIncome(newIncome);
+    }
   };
 
   console.log(income);
@@ -100,12 +114,7 @@ const DashboardHeader = ({ userEmail }: DashboardHeaderProps) => {
 
         <button onClick={addExp}>ADD</button>
 
-        <h5>
-          Balance:{" "}
-          {income.amount !== undefined && expense.amount !== undefined
-            ? income.amount - expense.amount
-            : "N/A"}
-        </h5>
+        <h5>Balance:{income.amount}</h5>
 
         {/* Display */}
       </main>
