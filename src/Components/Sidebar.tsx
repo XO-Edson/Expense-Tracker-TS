@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useSupabase } from "../Supabase/Supabase";
+import { useSupabase } from "../SupabaseContext/Supabase";
 
 type DashboardHeaderProps = {
   userEmail: string;

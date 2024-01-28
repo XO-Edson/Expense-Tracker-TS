@@ -1,7 +1,6 @@
 import SignUpUI from "./Components/SignUpUI";
 import { Route, Routes } from "react-router-dom";
 import { Transactions } from "./Components/Transactions";
-
 import Dashboard from "./Components/Dashboard";
 
 function App() {

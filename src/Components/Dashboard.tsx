@@ -1,12 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useSupabase } from "../Supabase/Supabase";
+import { useSupabase } from "../SupabaseContext/Supabase";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
-  const { supabase, accExpenses } = useSupabase();
+  const { supabase } = useSupabase();
 
   const navigate = useNavigate();
 
@@ -44,15 +44,6 @@ const Dashboard = () => {
       ) : (
         <main>
           <Sidebar userEmail={user.email} />
-
-          <section className="display-box">
-            {accExpenses.map((accEx, index) => (
-              <div key={index}>
-                <li>{accEx.amount}</li>
-                <li>{accEx.expenseCategory}</li>
-              </div>
-            ))}
-          </section>
         </main>
       )}
     </>

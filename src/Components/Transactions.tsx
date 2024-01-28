@@ -1,11 +1,20 @@
-import { useSupabase } from "../Supabase/Supabase";
+import { useSupabase } from "../SupabaseContext/Supabase";
+import Sidebar from "./Sidebar";
 
 export const Transactions = () => {
-  const { income, expense, balance, setIncome, setExpense, addExp } =
-    useSupabase();
+  const {
+    income,
+    expense,
+    balance,
+    setIncome,
+    setExpense,
+    addExp,
+    accExpenses,
+  } = useSupabase();
 
   return (
     <div>
+      <Sidebar userEmail={""} />
       <h4>
         Total Income:
         <input
@@ -56,6 +65,15 @@ export const Transactions = () => {
       <button onClick={addExp}>ADD</button>
 
       <h5>Balance: {balance()}</h5>
+
+      <section className="display-box">
+        {accExpenses.map((accEx, index) => (
+          <div key={index}>
+            <li>{accEx.amount}</li>
+            <li>{accEx.expenseCategory}</li>
+          </div>
+        ))}
+      </section>
     </div>
   );
 };
