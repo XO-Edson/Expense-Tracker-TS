@@ -10,70 +10,74 @@ export const Transactions = () => {
     setExpense,
     addExp,
     accExpenses,
+    user,
   } = useSupabase();
 
   return (
-    <div>
-      <Sidebar userEmail={""} />
-      <h4>
-        Total Income:
-        <input
-          type="number"
-          value={income.amount}
-          onChange={(e) => {
-            setIncome({ ...income, amount: parseInt(e.target.value, 10) });
-          }}
-        />
-      </h4>
+    <main>
+      <Sidebar userEmail={user.email} />
+      <div>
+        <h2>TRANSACTIONS</h2>
+        <h4>
+          Total Income:
+          <input
+            type="number"
+            value={income.amount}
+            onChange={(e) => {
+              setIncome({ ...income, amount: parseInt(e.target.value, 10) });
+            }}
+          />
+        </h4>
 
-      <h3>
-        IncomeType:
-        <input
-          type="text"
-          value={income.incomeCategory}
-          onChange={(e) =>
-            setIncome({ ...income, incomeCategory: e.target.value })
-          }
-        />
-      </h3>
+        <h3>
+          IncomeType:
+          <input
+            type="text"
+            value={income.incomeCategory}
+            onChange={(e) =>
+              setIncome({ ...income, incomeCategory: e.target.value })
+            }
+          />
+        </h3>
 
-      <h4>
-        Total Expenses:
-        <input
-          type="number"
-          value={expense.amount}
-          onChange={(e) => {
-            setExpense({
-              ...expense,
-              amount: parseInt(e.target.value, 10),
-            });
-          }}
-        />
-      </h4>
+        <h4>
+          Total Expenses:
+          <input
+            type="number"
+            value={expense.amount}
+            onChange={(e) => {
+              setExpense({
+                ...expense,
+                amount: parseInt(e.target.value, 10),
+              });
+            }}
+          />
+        </h4>
 
-      <h3>
-        ExpenseType:
-        <input
-          type="text"
-          value={expense.expenseCategory}
-          onChange={(e) =>
-            setExpense({ ...expense, expenseCategory: e.target.value })
-          }
-        />
-      </h3>
+        <h3>
+          ExpenseType:
+          <input
+            type="text"
+            value={expense.expenseCategory}
+            onChange={(e) =>
+              setExpense({ ...expense, expenseCategory: e.target.value })
+            }
+          />
+        </h3>
 
-      <button onClick={addExp}>ADD</button>
+        <button onClick={addExp}>ADD</button>
 
-      <h5>Balance: {balance()}</h5>
+        <h5>Balance: {balance()}</h5>
+      </div>
 
       <section className="display-box">
         {accExpenses.map((accEx, index) => (
-          <div key={index}>
-            <li>{accEx.amount}</li>
+          <ul key={index}>
             <li>{accEx.expenseCategory}</li>
-          </div>
+            <li>{accEx.amount}</li>
+          </ul>
         ))}
       </section>
-    </div>
+    </main>
   );
 };

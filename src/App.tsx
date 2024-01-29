@@ -8,6 +8,7 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<SignUpUI />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/transactions" element={<Transactions />} />
       </Routes>

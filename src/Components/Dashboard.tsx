@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const Dashboard = () => {
   const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
-  const { supabase } = useSupabase();
+  const { supabase, income, accExpenses, balance } = useSupabase();
 
   const navigate = useNavigate();
 
@@ -30,6 +30,11 @@ const Dashboard = () => {
     getUserData();
   }, [navigate, supabase.auth]);
 
+  const totalExpenses = accExpenses.reduce(
+    (sum, obj) => sum + (obj.amount || 0),
+    0
+  );
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -44,6 +49,50 @@ const Dashboard = () => {
       ) : (
         <main>
           <Sidebar userEmail={user.email} />
+
+          <article>
+            <h2>Dashboard</h2>
+            <p>hahahha</p>
+
+            {/* Card Feature */}
+            <div className="card">
+              <h5>Available Balance</h5>
+
+              <h1>$ {balance()}</h1>
+              <p>**** 1234</p>
+            </div>
+
+            <div className="summary">
+              <div className="income">
+                <h5>Income</h5>
+                <p>$ {income.amount}</p>
+              </div>
+
+              <div className="spendings">
+                <h5>Spendings</h5>
+                <p>${totalExpenses}</p>
+              </div>
+            </div>
+
+            <div className="recent-transactions">
+              <h4>Recent Transactions</h4>
+
+              <section className="transactions-display">
+                {accExpenses.map((accEx, index) => (
+                  <ul key={index}>
+                    <li>{accEx.expenseCategory}</li>
+                    <li>{accEx.amount}</li>
+                  </ul>
+                ))}
+              </section>
+            </div>
+          </article>
+
+          <article>
+            <div>
+              <p>GRAPH</p>
+            </div>
+          </article>
         </main>
       )}
     </>

@@ -19,19 +19,17 @@ body {
 main {
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-left: 200px;
+  grid-template-columns: 200px auto auto;
+  grid-template-rows: 1fr;
 }
 
 .sidebar {
   display: flex;
   justify-content: space-between;
-  background-color: red;
+  background-color: honeydew;
   height: 100%;
-
-  position: absolute;
-  left: 1rem;
-  top: 1rem;
+  width: 100%;
+  box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2);
 }
 
 .signup {
@@ -62,4 +60,45 @@ button {
 
 .signup-input {
   padding: 0.5rem;
+}
+
+.card {
+  width: 300px;
+  height: 200px;
+  background-color: aliceblue;
+  border-radius: 10px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  margin: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.summary {
+  display: flex;
+  column-gap: 0.5rem;
+}
+
+.income,
+.spendings {
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.transactions-display ul {
+  display: flex;
+  justify-content: space-between;
+  list-style-type: none;
+}
+
+.transactions-display li {
+  padding: 1rem;
+}
+
+article {
+  padding-left: 1.5rem;
 }

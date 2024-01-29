@@ -18,11 +18,10 @@ const Sidebar = ({ userEmail }: DashboardHeaderProps) => {
     <section className="sidebar">
       <div className="email-info">
         <div>
-          <h2>Dashboard</h2>
-          <p>{userEmail}</p>
+          <p></p>
         </div>
-
         <div className="navigation">
+          <button onClick={() => navigate("/dashboard")}>Dashboard</button>
           <button onClick={() => navigate("/transactions")}>
             Transactions
           </button>
