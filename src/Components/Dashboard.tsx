@@ -2,11 +2,41 @@ import { useNavigate } from "react-router-dom";
 import { useSupabase } from "../SupabaseContext/Supabase";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
+import { Line } from "react-chartjs-2";
+import {
+  Chart,
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+} from "chart.js";
+
+Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 const Dashboard = () => {
   const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const { supabase, income, accExpenses, balance } = useSupabase();
+
+  const data = {
+    labels: ["Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30"],
+    datasets: [
+      {
+        label: "Expenses",
+        data: [5000, 1000, 2000, 600, 2150, 55],
+        borderColor: "#008000",
+        backgroundColor: "transparent",
+        tension: 0.4,
+      },
+      {
+        label: "Income",
+        data: [5500, 10000, 2000, 200, 150, 505],
+        borderColor: "red",
+        backgroundColor: "transparent",
+        tension: 0.4,
+      },
+    ],
+  };
 
   const navigate = useNavigate();
 
@@ -52,7 +82,6 @@ const Dashboard = () => {
 
           <article>
             <h2>Dashboard</h2>
-            <p>hahahha</p>
 
             {/* Card Feature */}
             <div className="card">
@@ -89,8 +118,9 @@ const Dashboard = () => {
           </article>
 
           <article>
-            <div>
+            <div className="graph">
               <p>GRAPH</p>
+              <Line data={data} />
             </div>
           </article>
         </main>

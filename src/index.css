@@ -8,6 +8,8 @@
 
 body {
   height: 100vh;
+  /*   background-color: #202020;
+  color: aliceblue; */
 }
 
 #root {
@@ -19,7 +21,7 @@ body {
 main {
   height: 100%;
   display: grid;
-  grid-template-columns: 200px auto auto;
+  grid-template-columns: 200px 1fr 1fr;
   grid-template-rows: 1fr;
 }
 
@@ -63,7 +65,7 @@ button {
 }
 
 .card {
-  width: 300px;
+  width: 350px;
   height: 200px;
   background-color: aliceblue;
   border-radius: 10px;
@@ -101,4 +103,8 @@ button {
 
 article {
   padding-left: 1.5rem;
+}
+
+.graph {
+  padding: 1rem;
 }

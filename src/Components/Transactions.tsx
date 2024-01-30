@@ -10,12 +10,11 @@ export const Transactions = () => {
     setExpense,
     addExp,
     accExpenses,
-    user,
   } = useSupabase();
 
   return (
     <main>
-      <Sidebar userEmail={user.email} />
+      <Sidebar userEmail={""} />
       <div>
         <h2>TRANSACTIONS</h2>
         <h4>
@@ -68,16 +67,22 @@ export const Transactions = () => {
         <button onClick={addExp}>ADD</button>
 
         <h5>Balance: {balance()}</h5>
+        <section className="transactions-display">
+          {accExpenses.map((accEx, index) => (
+            <ul key={index}>
+              <li>{accEx.expenseCategory}</li>
+              <li>{accEx.amount}</li>
+            </ul>
+          ))}
+        </section>
       </div>
 
-      <section className="display-box">
-        {accExpenses.map((accEx, index) => (
-          <ul key={index}>
-            <li>{accEx.expenseCategory}</li>
-            <li>{accEx.amount}</li>
-          </ul>
-        ))}
-      </section>
+      <div className="card">
+        <h5>Available Balance</h5>
+
+        <h1>$ {balance()}</h1>
+        <p>**** 1234</p>
+      </div>
     </main>
   );
 };
