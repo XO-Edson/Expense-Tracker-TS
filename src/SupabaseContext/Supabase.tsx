@@ -97,6 +97,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
     setAccIncome((prevIncome) => [...prevIncome, income]);
     setExpense({ amount: NaN, expenseCategory: "" });
+    setIncome({ amount: NaN, incomeCategory: "" });
 
     balance();
   };
