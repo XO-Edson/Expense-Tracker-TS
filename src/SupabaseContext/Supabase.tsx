@@ -26,6 +26,7 @@ type ContextProps = {
   balance: () => number;
   addExp: () => void;
   accExpenses: ExpenseType[];
+  accIncome: IncomeType[];
   income: IncomeType;
   expense: ExpenseType;
   setIncome: (e: any) => void;
@@ -72,6 +73,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   });
 
   const [accExpenses, setAccExpenses] = useState<ExpenseType[]>([]);
+  const [accIncome, setAccIncome] = useState<IncomeType[]>([]);
 
   const balance = (): number => {
     if (income.amount !== undefined) {
@@ -80,7 +82,12 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         0
       );
 
-      return income.amount - totalExpenses;
+      const totalIncome = accIncome.reduce(
+        (sum, obj) => sum + (obj.amount || 0),
+        0
+      );
+
+      return totalIncome - totalExpenses;
     } else {
       return 0;
     }
@@ -88,7 +95,8 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
 
   const addExp = () => {
     setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
-    setExpense({ amount: undefined, expenseCategory: "" });
+    setAccIncome((prevIncome) => [...prevIncome, income]);
+    setExpense({ amount: NaN, expenseCategory: "" });
 
     balance();
   };
@@ -100,6 +108,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         balance,
         addExp,
         accExpenses,
+        accIncome,
         income,
         expense,
         setIncome,

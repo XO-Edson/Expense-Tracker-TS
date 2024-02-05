@@ -8,14 +8,13 @@
 
 body {
   height: 100vh;
-  /*   background-color: #202020;
-  color: aliceblue; */
+  background-color: #292828;
+  color: aliceblue;
 }
 
 #root {
   height: 100%;
   width: 100%;
-  padding: 1rem;
 }
 
 main {
@@ -28,7 +27,7 @@ main {
 .sidebar {
   display: flex;
   justify-content: space-between;
-  background-color: honeydew;
+  background-color: #1b1a1a;
   height: 100%;
   width: 100%;
   box-shadow: 4px 0 4px rgba(0, 0, 0, 0.2);
@@ -67,10 +66,10 @@ button {
 .card {
   width: 350px;
   height: 200px;
-  background-color: aliceblue;
+  background: linear-gradient(#3f3f3f, #0c0c0c);
   border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 4px #008000;
   margin: 1rem;
 
   display: flex;
