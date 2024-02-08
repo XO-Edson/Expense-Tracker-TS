@@ -13,13 +13,15 @@ type SupaBaseProviderProps = {
 
 type IncomeType = {
   amount?: number;
-  incomeCategory: string;
+  category: string;
 };
 
 type ExpenseType = {
   amount?: number;
-  expenseCategory: string;
+  category: string;
 };
+
+type TransactionType = IncomeType | ExpenseType;
 
 type ContextProps = {
   supabase: SupabaseClient;
@@ -32,6 +34,7 @@ type ContextProps = {
   setIncome: (e: any) => void;
   setExpense: (e: any) => void;
   user: any;
+  allTransactions: TransactionType[];
 };
 
 const SupabaseContext = createContext<ContextProps | undefined>(undefined);
@@ -64,19 +67,21 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
 
   const [income, setIncome] = useState<IncomeType>({
     amount: undefined,
-    incomeCategory: "",
+    category: "",
   });
 
   const [expense, setExpense] = useState<ExpenseType>({
     amount: undefined,
-    expenseCategory: "",
+    category: "",
   });
 
   const [accExpenses, setAccExpenses] = useState<ExpenseType[]>([]);
   const [accIncome, setAccIncome] = useState<IncomeType[]>([]);
 
+  const [allTransactions, setAllTransactions] = useState<TransactionType[]>([]);
+
   const balance = (): number => {
-    if (income.amount !== undefined) {
+    if (income.amount !== 0) {
       const totalExpenses = accExpenses.reduce(
         (sum, obj) => sum + (obj.amount || 0),
         0
@@ -94,10 +99,24 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   };
 
   const addExp = () => {
-    setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
+    setIncome({ amount: undefined, category: "" });
+    setExpense({ amount: undefined, category: "" });
+
     setAccIncome((prevIncome) => [...prevIncome, income]);
-    setExpense({ amount: NaN, expenseCategory: "" });
-    setIncome({ amount: NaN, incomeCategory: "" });
+    setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
+
+    // Combine newly added income and expense with existing entries
+    const allIncome = [...accIncome, income];
+    const allExpenses = [...accExpenses, expense];
+    const accTransactions = [...allIncome, ...allExpenses];
+
+    // Filter out undefined entries
+    const filteredTransactions = accTransactions.filter(
+      (item) => item.amount !== undefined
+    );
+
+    // Update transactions with the filtered data
+    setAllTransactions(filteredTransactions);
 
     balance();
   };
@@ -115,6 +134,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         setIncome,
         setExpense,
         user,
+        allTransactions,
       }}
     >
       {children}

@@ -109,7 +109,7 @@ const Dashboard = () => {
               <section className="transactions-display">
                 {accExpenses.map((accEx, index) => (
                   <ul key={index}>
-                    <li>{accEx.expenseCategory}</li>
+                    <li>{accEx.category}</li>
                     <li>{accEx.amount}</li>
                   </ul>
                 ))}
