@@ -35,6 +35,8 @@ type ContextProps = {
   setExpense: (e: any) => void;
   user: any;
   allTransactions: TransactionType[];
+  togglePopup: () => void;
+  popup: boolean;
 };
 
 const SupabaseContext = createContext<ContextProps | undefined>(undefined);
@@ -80,6 +82,12 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
 
   const [allTransactions, setAllTransactions] = useState<TransactionType[]>([]);
 
+  const [popup, setPopup] = useState<boolean>(false);
+
+  function togglePopup() {
+    setPopup((prev) => !prev);
+  }
+
   const balance = (): number => {
     if (income.amount !== 0) {
       const totalExpenses = accExpenses.reduce(
@@ -119,6 +127,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     setAllTransactions(filteredTransactions);
 
     balance();
+    togglePopup();
   };
 
   return (
@@ -135,6 +144,8 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         setExpense,
         user,
         allTransactions,
+        togglePopup,
+        popup,
       }}
     >
       {children}
