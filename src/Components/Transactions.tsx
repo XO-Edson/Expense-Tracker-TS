@@ -1,6 +1,8 @@
 import { useSupabase } from "../SupabaseContext/Supabase";
 import Sidebar from "./Sidebar";
 import Popup from "./Popup";
+import { useTable } from "react-table";
+import { useMemo } from "react";
 
 export const Transactions = () => {
   const {
@@ -8,10 +10,30 @@ export const Transactions = () => {
     togglePopup,
     popup,
 
-    allTransactions,
+    tableData,
   } = useSupabase();
 
-  console.log(allTransactions);
+  console.log(tableData);
+
+  const data = tableData;
+
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable({
+      data,
+      columns: useMemo(
+        () => [
+          {
+            Header: "Amount",
+            accessor: "amount",
+          },
+          {
+            Header: "Category",
+            accessor: "category",
+          },
+        ],
+        []
+      ),
+    });
 
   return (
     <main>
@@ -24,12 +46,38 @@ export const Transactions = () => {
         <h5>Balance: {balance()}</h5>
 
         <section className="transactions-display">
-          {allTransactions.map((trans, index) => (
+          <table {...getTableProps()}>
+            <thead>
+              {headerGroups.map((headerGroup) => (
+                <tr {...headerGroup.getHeaderGroupProps()}>
+                  {headerGroup.headers.map((column) => (
+                    <th {...column.getHeaderProps()}>
+                      {column.render("Header")}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody {...getTableBodyProps()}>
+              {rows.map((row) => {
+                prepareRow(row);
+                return (
+                  <tr {...row.getRowProps()}>
+                    {row.cells.map((cell) => (
+                      <td {...cell.getCellProps()}>{cell.render("Cell")} </td>
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          {/*  {allTransactions.map((trans, index) => (
             <ul key={index}>
               <li>{trans.category}</li>
               <li>{trans.amount}</li>
             </ul>
-          ))}
+          ))} */}
         </section>
       </section>
 

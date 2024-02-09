@@ -37,6 +37,7 @@ type ContextProps = {
   allTransactions: TransactionType[];
   togglePopup: () => void;
   popup: boolean;
+  tableData: any;
 };
 
 const SupabaseContext = createContext<ContextProps | undefined>(undefined);
@@ -46,6 +47,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     "https://dlqwbcnampbxxuowszdl.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRscXdiY25hbXBieHh1b3dzemRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDU2NTMwMjQsImV4cCI6MjAyMTIyOTAyNH0.aic0gbTZB4xzclit1TefvdTan9XgNRu5RHpRp0OjBs0"
   );
+
   const [user, setUser] = useState<any>();
 
   useEffect(() => {
@@ -83,6 +85,8 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   const [allTransactions, setAllTransactions] = useState<TransactionType[]>([]);
 
   const [popup, setPopup] = useState<boolean>(false);
+
+  const [tableData, setTableData] = useState<any>([]);
 
   function togglePopup() {
     setPopup((prev) => !prev);
@@ -126,6 +130,24 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     // Update transactions with the filtered data
     setAllTransactions(filteredTransactions);
 
+    const newTransaction = {
+      amount:
+        income.amount !== undefined
+          ? income.amount
+          : expense.amount !== undefined
+          ? expense.amount
+          : 0,
+      category:
+        income.category !== ""
+          ? income.category
+          : expense.category !== ""
+          ? expense.category
+          : "",
+    };
+
+    // Update tableData with the new transaction
+    setTableData([...tableData, newTransaction]);
+
     balance();
     togglePopup();
   };
@@ -146,6 +168,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         allTransactions,
         togglePopup,
         popup,
+        tableData,
       }}
     >
       {children}
