@@ -14,12 +14,21 @@ import {
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 const Dashboard = () => {
-  const [user, setUser] = useState<any>("guest");
+  const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
-  const { supabase, tableData, accExpenses, accIncome, balance } =
-    useSupabase();
+  const {
+    supabase,
+    tableData,
+    accExpenses,
+    accIncome,
+    balance,
+    togglePopup,
+    popup,
+  } = useSupabase();
 
-  console.log(tableData);
+  const handleInputClick = (e: any) => {
+    e.stopPropagation(); // Prevent click event from propagating to the background
+  };
 
   const data = {
     labels: ["Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30"],
@@ -79,12 +88,12 @@ const Dashboard = () => {
 
   return (
     <>
-      {user /*?  (
+      {!user ? (
         <div className="redirect">
           <h3>User is not logged in</h3>
           <button onClick={() => navigate("/")}>Homepage</button>
         </div>
-      )  */ && (
+      ) : (
         <main>
           <Sidebar userEmail={user.email} />
 
@@ -115,7 +124,7 @@ const Dashboard = () => {
               <h4>Recent Transactions</h4>
 
               <section className="transactions-display">
-                {tableData.map((accTransactions, index) => (
+                {tableData.map((accTransactions: any, index: number) => (
                   <ul key={index}>
                     <li>{accTransactions.category}</li>
                     <li>{accTransactions.amount}</li>
@@ -131,12 +140,25 @@ const Dashboard = () => {
               <Line data={data} />
             </div>
 
-            <div className="savingsPlan">
-              <h3>Savings Plan</h3>
+            <h3>Savings Plan</h3>
+            <button onClick={togglePopup}>Add Plan</button>
+            {popup && (
+              <div className="savings-plan-background" onClick={togglePopup}>
+                <div className="savings-plan" onClick={handleInputClick}>
+                  <div className="savings-plan-container">
+                    <h3>Category</h3>
+                    <input type="text" />
+                    <h3>Target amount</h3>
+                    <input type="number" />
 
-              <div className="savings-container">
-                <div className="savings"></div>
+                    <button>Add</button>
+                  </div>
+                </div>
               </div>
+            )}
+
+            <div className="savings-container">
+              <div className="savings"></div>
             </div>
           </article>
         </main>

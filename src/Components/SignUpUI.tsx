@@ -11,7 +11,7 @@ const SignUpUI = () => {
     navigate("/dashboard");
   };
 
-  /* useEffect(() => {
+  useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
         console.log("SIGNED_IN", session);
@@ -23,7 +23,7 @@ const SignUpUI = () => {
 
     return () => {};
   }, [navigate, supabase.auth]);
- */
+
   return (
     <section className="signup">
       <h1>Welcome</h1>

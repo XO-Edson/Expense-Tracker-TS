@@ -1,4 +1,4 @@
-/* @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap");
 @import url("https://cdn.syncfusion.com/ej2/material.css");
 
 * {
@@ -114,7 +114,8 @@ article {
   padding: 1rem;
 }
 
-.input-fields-background {
+.input-fields-background,
+.savings-plan-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -127,7 +128,8 @@ article {
   z-index: 999;
 }
 
-.input-fields {
+.input-fields,
+.savings-plan {
   background-color: rgba(0, 0, 255, 0.464);
   padding: 1rem;
   z-index: 9999;
@@ -152,4 +154,3 @@ article {
   background-color: green;
   border-radius: 10px;
 }
- */

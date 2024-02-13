@@ -14,11 +14,13 @@ type SupaBaseProviderProps = {
 type IncomeType = {
   amount?: number;
   category: string;
+  date: Date;
 };
 
 type ExpenseType = {
   amount?: number;
   category: string;
+  date: Date;
 };
 
 type TransactionType = IncomeType | ExpenseType;
@@ -38,6 +40,8 @@ type ContextProps = {
   togglePopup: () => void;
   popup: boolean;
   tableData: any;
+  entry: Boolean;
+  setEntry: (e: any) => void;
 };
 
 const SupabaseContext = createContext<ContextProps | undefined>(undefined);
@@ -72,11 +76,13 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   const [income, setIncome] = useState<IncomeType>({
     amount: undefined,
     category: "",
+    date: new Date(),
   });
 
   const [expense, setExpense] = useState<ExpenseType>({
     amount: undefined,
     category: "",
+    date: new Date(),
   });
 
   const [accExpenses, setAccExpenses] = useState<ExpenseType[]>([]);
@@ -87,6 +93,8 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   const [popup, setPopup] = useState<boolean>(false);
 
   const [tableData, setTableData] = useState<any>([]);
+
+  const [entry, setEntry] = useState<boolean>(false);
 
   function togglePopup() {
     setPopup((prev) => !prev);
@@ -111,8 +119,8 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   };
 
   const addExp = () => {
-    setIncome({ amount: undefined, category: "" });
-    setExpense({ amount: undefined, category: "" });
+    setIncome({ amount: undefined, category: "", date: new Date() });
+    setExpense({ amount: undefined, category: "", date: new Date() });
 
     setAccIncome((prevIncome) => [...prevIncome, income]);
     setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
@@ -169,6 +177,8 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         togglePopup,
         popup,
         tableData,
+        entry,
+        setEntry,
       }}
     >
       {children}

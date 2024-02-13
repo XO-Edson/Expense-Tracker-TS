@@ -14,8 +14,6 @@ export const Transactions = () => {
     tableData,
   } = useSupabase();
 
-  console.log(tableData);
-
   const data = tableData;
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
