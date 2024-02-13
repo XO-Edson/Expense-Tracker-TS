@@ -2,7 +2,8 @@ import { useSupabase } from "../SupabaseContext/Supabase";
 import Sidebar from "./Sidebar";
 import Popup from "./Popup";
 import { useTable } from "react-table";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import DateTimePicker from "react-datetime-picker";
 
 export const Transactions = () => {
   const {
@@ -34,6 +35,8 @@ export const Transactions = () => {
         []
       ),
     });
+
+  const [value, setValue] = useState(new Date());
 
   return (
     <main>
@@ -80,13 +83,18 @@ export const Transactions = () => {
           ))} */}
         </section>
       </section>
+      <section>
+        <div className="card">
+          <h5>Available Balance</h5>
 
-      <div className="card">
-        <h5>Available Balance</h5>
+          <h1>$ {balance()}</h1>
+          <p>**** 1234</p>
+        </div>
 
-        <h1>$ {balance()}</h1>
-        <p>**** 1234</p>
-      </div>
+        <div>
+          <DateTimePicker onChange={setValue} value={value} />
+        </div>
+      </section>
     </main>
   );
 };
