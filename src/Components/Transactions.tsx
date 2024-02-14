@@ -1,9 +1,8 @@
 import { useSupabase } from "../SupabaseContext/Supabase";
 import Sidebar from "./Sidebar";
-import Popup from "./Popup";
+import TransactionsPopup from "./TransactionsPopup";
 import { useTable } from "react-table";
-import { useMemo, useState } from "react";
-import DateTimePicker from "react-datetime-picker";
+import { useMemo } from "react";
 
 export const Transactions = () => {
   const {
@@ -29,12 +28,17 @@ export const Transactions = () => {
             Header: "Category",
             accessor: "category",
           },
+          {
+            Header: "Date",
+            accessor: "date",
+            Cell: ({ value }: any) => (
+              <span>{new Date(value).toLocaleDateString()}</span>
+            ),
+          },
         ],
         []
       ),
     });
-
-  const [value, setValue] = useState(new Date());
 
   return (
     <main>
@@ -42,7 +46,7 @@ export const Transactions = () => {
       <section>
         <h2>TRANSACTIONS</h2>
         <button onClick={togglePopup}>Add Transaction</button>
-        {popup && <Popup />}
+        {popup && <TransactionsPopup />}
 
         <h5>Balance: {balance()}</h5>
 
@@ -87,10 +91,6 @@ export const Transactions = () => {
 
           <h1>$ {balance()}</h1>
           <p>**** 1234</p>
-        </div>
-
-        <div>
-          <DateTimePicker onChange={setValue} value={value} />
         </div>
       </section>
     </main>

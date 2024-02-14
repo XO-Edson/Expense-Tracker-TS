@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { useSupabase } from "../SupabaseContext/Supabase";
+import DateTimePicker from "react-datetime-picker";
 
-const Popup = () => {
+const TransactionsPopup = () => {
   const {
     income,
     setIncome,
@@ -19,6 +21,8 @@ const Popup = () => {
   const toggleEntryField = () => {
     setEntry((prev: any) => !prev);
   };
+
+  const [value, setValue] = useState(new Date());
 
   return (
     <div className="input-fields-background" onClick={togglePopup}>
@@ -55,6 +59,7 @@ const Popup = () => {
                   }
                 />
               </h3>
+              <DateTimePicker onChange={setValue} value={value} />
             </>
           ) : (
             <>
@@ -81,6 +86,7 @@ const Popup = () => {
                   }
                 />
               </h3>
+              <DateTimePicker onChange={setValue} value={value} />
             </>
           )}
         </div>
@@ -91,4 +97,4 @@ const Popup = () => {
   );
 };
 
-export default Popup;
+export default TransactionsPopup;

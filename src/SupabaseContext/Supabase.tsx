@@ -23,6 +23,12 @@ type ExpenseType = {
   date: Date;
 };
 
+export type Savingstype = {
+  category: string;
+  targetAmount?: number;
+  depositAmount?: number;
+};
+
 type TransactionType = IncomeType | ExpenseType;
 
 type ContextProps = {
@@ -42,6 +48,8 @@ type ContextProps = {
   tableData: any;
   entry: Boolean;
   setEntry: (e: any) => void;
+  accSavings?: Savingstype[];
+  setAccSavings: (e: any) => void;
 };
 
 const SupabaseContext = createContext<ContextProps | undefined>(undefined);
@@ -87,6 +95,8 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
 
   const [accExpenses, setAccExpenses] = useState<ExpenseType[]>([]);
   const [accIncome, setAccIncome] = useState<IncomeType[]>([]);
+
+  const [accSavings, setAccSavings] = useState<Savingstype[]>();
 
   const [allTransactions, setAllTransactions] = useState<TransactionType[]>([]);
 
@@ -151,6 +161,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
           : expense.category !== ""
           ? expense.category
           : "",
+      date: new Date(),
     };
 
     // Update tableData with the new transaction
@@ -179,6 +190,8 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         tableData,
         entry,
         setEntry,
+        accSavings,
+        setAccSavings,
       }}
     >
       {children}

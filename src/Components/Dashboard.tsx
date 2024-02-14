@@ -10,6 +10,7 @@ import {
   LinearScale,
   PointElement,
 } from "chart.js";
+import SavingsPopup from "./SavingsPopup";
 
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
@@ -24,11 +25,10 @@ const Dashboard = () => {
     balance,
     togglePopup,
     popup,
+    accSavings,
   } = useSupabase();
 
-  const handleInputClick = (e: any) => {
-    e.stopPropagation(); // Prevent click event from propagating to the background
-  };
+  console.log(accSavings);
 
   const data = {
     labels: ["Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30"],
@@ -128,6 +128,9 @@ const Dashboard = () => {
                   <ul key={index}>
                     <li>{accTransactions.category}</li>
                     <li>{accTransactions.amount}</li>
+                    <li>
+                      {new Date(accTransactions.date).toLocaleDateString()}
+                    </li>
                   </ul>
                 ))}
               </section>
@@ -142,23 +145,16 @@ const Dashboard = () => {
 
             <h3>Savings Plan</h3>
             <button onClick={togglePopup}>Add Plan</button>
-            {popup && (
-              <div className="savings-plan-background" onClick={togglePopup}>
-                <div className="savings-plan" onClick={handleInputClick}>
-                  <div className="savings-plan-container">
-                    <h3>Category</h3>
-                    <input type="text" />
-                    <h3>Target amount</h3>
-                    <input type="number" />
-
-                    <button>Add</button>
-                  </div>
-                </div>
-              </div>
-            )}
+            {popup && <SavingsPopup />}
 
             <div className="savings-container">
-              <div className="savings"></div>
+              {accSavings?.map((savings) => (
+                <div className="savings">
+                  <h4>{savings.category}</h4>
+                  <p>DEPOSIT: {savings.depositAmount}</p>
+                  <p>TARGET: {savings.targetAmount}</p>
+                </div>
+              ))}
             </div>
           </article>
         </main>
