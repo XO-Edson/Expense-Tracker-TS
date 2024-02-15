@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useSupabase } from "../SupabaseContext/Supabase";
 import Sidebar from "./Sidebar";
-import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
 import {
   Chart,
@@ -14,11 +13,13 @@ import SavingsPopup from "./SavingsPopup";
 
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
-const Dashboard = () => {
-  const [user, setUser] = useState<any>();
-  const [isLoading, setIsLoading] = useState(true);
+type DashboardProps = {
+  user: any;
+  isLoading: boolean;
+};
+
+const Dashboard = ({ user, isLoading }: DashboardProps) => {
   const {
-    supabase,
     tableData,
     accExpenses,
     accIncome,
@@ -52,26 +53,6 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const { data, error } = await supabase.auth.getUser();
-        if (error) {
-          console.error("Error fetching user data:", error);
-        } else if (data?.user) {
-          setUser(data.user);
-          console.log("User data:", data.user);
-        }
-      } catch (error) {
-        console.error("Unexpected error:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    getUserData();
-  }, [navigate, supabase.auth]);
-
   const totalExpenses = accExpenses.reduce(
     (sum, obj) => sum + (obj.amount || 0),
     0
@@ -100,7 +81,7 @@ const Dashboard = () => {
           <article>
             <h2>Dashboard</h2>
 
-            {/* Card Feature */}
+            {/* Card Column */}
             <div className="card">
               <h5>Available Balance</h5>
 
@@ -137,6 +118,7 @@ const Dashboard = () => {
             </div>
           </article>
 
+          {/* Graph column */}
           <article>
             <div className="graph">
               <p>GRAPH</p>
@@ -144,10 +126,10 @@ const Dashboard = () => {
             </div>
 
             <h3>Savings Plan</h3>
-            <button onClick={togglePopup}>Add Plan</button>
             {popup && <SavingsPopup />}
 
             <div className="savings-container">
+              <button onClick={togglePopup}>+</button>
               {accSavings?.map((savings) => (
                 <div className="savings">
                   <h4>{savings.category}</h4>
