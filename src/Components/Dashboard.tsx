@@ -119,7 +119,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
           </article>
 
           {/* Graph column */}
-          <article>
+          <article className="graph-column">
             <div className="graph">
               <p>GRAPH</p>
               <Line data={data} />
@@ -135,6 +135,21 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
                   <h4>{savings.category}</h4>
                   <p>DEPOSIT: {savings.depositAmount}</p>
                   <p>TARGET: {savings.targetAmount}</p>
+
+                  <div className="progress-bar">
+                    <div
+                      className="progress-bar-fill"
+                      style={{
+                        width:
+                          savings.depositAmount && savings.targetAmount
+                            ? `${
+                                (savings.depositAmount / savings.targetAmount) *
+                                100
+                              }%`
+                            : "0%",
+                      }}
+                    ></div>
+                  </div>
                 </div>
               ))}
             </div>

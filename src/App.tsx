@@ -7,7 +7,7 @@ import { useSupabase } from "./SupabaseContext/Supabase";
 import Header from "./Components/Header";
 
 function App() {
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<any>("h");
   const [isLoading, setIsLoading] = useState(true);
   const { supabase } = useSupabase();
 
