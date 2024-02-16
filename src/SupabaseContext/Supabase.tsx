@@ -129,6 +129,25 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   };
 
   const addExp = () => {
+    const newTransaction = {
+      amount:
+        income.amount !== undefined
+          ? income.amount
+          : expense.amount !== undefined
+          ? expense.amount
+          : 0,
+      category:
+        income.category !== ""
+          ? income.category
+          : expense.category !== ""
+          ? expense.category
+          : "",
+      date: income.date || expense.date,
+    };
+
+    // Update tableData with the new transaction
+    setTableData([...tableData, newTransaction]);
+
     setAccIncome((prevIncome) => [...prevIncome, income]);
     setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
 
@@ -144,25 +163,6 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
 
     // Update transactions with the filtered data
     setAllTransactions(filteredTransactions);
-
-    const newTransaction = {
-      amount:
-        income.amount !== undefined
-          ? income.amount
-          : expense.amount !== undefined
-          ? expense.amount
-          : 0,
-      category:
-        income.category !== ""
-          ? income.category
-          : expense.category !== ""
-          ? expense.category
-          : "",
-      date: new Date(),
-    };
-
-    // Update tableData with the new transaction
-    setTableData([...tableData, newTransaction]);
 
     setIncome({ amount: undefined, category: "", date: new Date() });
     setExpense({ amount: undefined, category: "", date: new Date() });

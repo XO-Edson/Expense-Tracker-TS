@@ -30,8 +30,6 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     allTransactions,
   } = useSupabase();
 
-  console.log(accIncome);
-
   const formatDate = (date: Date) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
       month: "short",

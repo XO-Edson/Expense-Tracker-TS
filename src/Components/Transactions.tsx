@@ -43,6 +43,7 @@ export const Transactions = () => {
   return (
     <main>
       <Sidebar userEmail={""} />
+
       <section>
         <h2>TRANSACTIONS</h2>
         <button onClick={togglePopup}>Add Transaction</button>
@@ -76,15 +77,9 @@ export const Transactions = () => {
               })}
             </tbody>
           </table>
-
-          {/*  {allTransactions.map((trans, index) => (
-            <ul key={index}>
-              <li>{trans.category}</li>
-              <li>{trans.amount}</li>
-            </ul>
-          ))} */}
         </section>
       </section>
+
       <section>
         <div className="card">
           <h5>Available Balance</h5>
