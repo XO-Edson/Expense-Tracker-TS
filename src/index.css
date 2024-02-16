@@ -1,5 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap");
-@import url("https://cdn.syncfusion.com/ej2/material.css");
 
 * {
   padding: 0;
@@ -11,6 +10,7 @@ body {
   height: 100vh;
   background-color: #292828;
   color: aliceblue;
+  font-family: "Courier New", Courier, monospace;
 }
 
 #root {
@@ -179,8 +179,8 @@ article {
 }
 
 .savings-container::-webkit-scrollbar-thumb {
-  background-color: #888; /* Color of the scrollbar thumb */
-  border-radius: 5px; /* Roundness of the scrollbar thumb */
+  background-color: #888;
+  border-radius: 5px;
 }
 
 .savings {

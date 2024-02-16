@@ -27,23 +27,40 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     togglePopup,
     popup,
     accSavings,
+    allTransactions,
   } = useSupabase();
 
-  console.log(accSavings);
+  console.log(accIncome);
+
+  const formatDate = (date: Date) => {
+    const formattedDate = new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+    });
+    return formattedDate;
+  };
+
+  const formattedLabels = allTransactions.map((transactions) =>
+    formatDate(transactions.date)
+  );
 
   const data = {
-    labels: ["Jan 25", "Jan 26", "Jan 27", "Jan 28", "Jan 29", "Jan 30"],
+    labels: formattedLabels,
     datasets: [
       {
         label: "Expenses",
-        data: [5000, 1000, 2000, 600, 2150, 55],
+        data: accExpenses
+          .filter((expense) => typeof expense.amount === "number")
+          .map((expense) => expense.amount),
         borderColor: "#008000",
         backgroundColor: "transparent",
         tension: 0.4,
       },
       {
         label: "Income",
-        data: [5500, 10000, 2000, 200, 150, 505],
+        data: accIncome
+          .filter((income) => typeof income.amount === "number")
+          .map((income) => income.amount),
         borderColor: "red",
         backgroundColor: "transparent",
         tension: 0.4,
@@ -149,6 +166,14 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
                             : "0%",
                       }}
                     ></div>
+                    <h4>
+                      {savings.depositAmount && savings.targetAmount
+                        ? Math.round(
+                            (savings.depositAmount / savings.targetAmount) * 100
+                          )
+                        : 0}
+                      %
+                    </h4>
                   </div>
                 </div>
               ))}

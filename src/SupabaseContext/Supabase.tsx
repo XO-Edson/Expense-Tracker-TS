@@ -129,9 +129,6 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   };
 
   const addExp = () => {
-    setIncome({ amount: undefined, category: "", date: new Date() });
-    setExpense({ amount: undefined, category: "", date: new Date() });
-
     setAccIncome((prevIncome) => [...prevIncome, income]);
     setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
 
@@ -166,6 +163,9 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
 
     // Update tableData with the new transaction
     setTableData([...tableData, newTransaction]);
+
+    setIncome({ amount: undefined, category: "", date: new Date() });
+    setExpense({ amount: undefined, category: "", date: new Date() });
 
     balance();
     togglePopup();
