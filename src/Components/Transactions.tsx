@@ -1,8 +1,8 @@
-import { useSupabase } from "../SupabaseContext/Supabase";
+import { useLocalStorage, useSupabase } from "../SupabaseContext/Supabase";
 import Sidebar from "./Sidebar";
 import TransactionsPopup from "./TransactionsPopup";
 import { useTable } from "react-table";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 export const Transactions = () => {
   const {
@@ -13,7 +13,19 @@ export const Transactions = () => {
     tableData,
   } = useSupabase();
 
-  const data = tableData;
+  const { storedValue, setValue, clear } = useLocalStorage(
+    "transactions",
+    tableData
+  );
+
+  console.log(tableData);
+  console.log(storedValue);
+
+  useEffect(() => {
+    setValue(tableData);
+  }, [tableData]); // Run whenever allTransactions changes
+
+  const data = storedValue;
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({

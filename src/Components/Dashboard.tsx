@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useSupabase } from "../SupabaseContext/Supabase";
+import { useLocalStorage, useSupabase } from "../SupabaseContext/Supabase";
 import Sidebar from "./Sidebar";
 import { Line } from "react-chartjs-2";
 import {
@@ -29,6 +29,9 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     accSavings,
     allTransactions,
   } = useSupabase();
+
+  const { storedValue } = useLocalStorage("transactions", tableData);
+  console.log(storedValue);
 
   const formatDate = (date: Date) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -120,7 +123,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
               <h4>Recent Transactions</h4>
 
               <section className="transactions-display">
-                {tableData.map((accTransactions: any, index: number) => (
+                {storedValue.map((accTransactions: any, index: number) => (
                   <ul key={index}>
                     <li>{accTransactions.category}</li>
                     <li>{accTransactions.amount}</li>

@@ -148,13 +148,13 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     // Update tableData with the new transaction
     setTableData([...tableData, newTransaction]);
 
-    setAccIncome((prevIncome) => [...prevIncome, income]);
-    setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
-
     // Combine newly added income and expense with existing entries
     const allIncome = [...accIncome, income];
     const allExpenses = [...accExpenses, expense];
     const accTransactions = [...allIncome, ...allExpenses];
+
+    setAccIncome((prevIncome) => [...prevIncome, income]);
+    setAccExpenses((prevExpenses) => [...prevExpenses, expense]);
 
     // Filter out undefined entries
     const filteredTransactions = accTransactions.filter(
@@ -209,4 +209,57 @@ const useSupabase = () => {
   return context;
 };
 
-export { SupabaseProvider, useSupabase };
+/* local storage hook */
+
+const useLocalStorage = (key: string, initialValue: any[]) => {
+  const [storedValue, setStoredValue] = useState<any[]>(() => {
+    try {
+      const item = localStorage.getItem(key);
+      // Parse stored JSON or if none, return initialValue
+      return item ? JSON.parse(item) : initialValue;
+    } catch (error) {
+      // If error, return initialValue
+      console.error("Error loading from local storage:", error);
+      return initialValue;
+    }
+  });
+
+  // Set a new value in local storage
+  const setValue = (value: any[]) => {
+    try {
+      setStoredValue(() => {
+        localStorage.setItem(key, JSON.stringify(value));
+        return value;
+      });
+    } catch (error) {
+      console.error("Error saving to local storage:", error);
+    }
+  };
+
+  const removeItem = () => {
+    try {
+      // Remove from local storage
+      localStorage.removeItem(key);
+      // Reset the stored value to an empty array
+      setStoredValue([]);
+    } catch (error) {
+      console.error("Error removing from local storage:", error);
+    }
+  };
+
+  // Clear all items from local storage
+  const clear = () => {
+    try {
+      // Clear local storage
+      localStorage.clear();
+      // Reset the stored value to an empty array
+      setStoredValue([]);
+    } catch (error) {
+      console.error("Error clearing local storage:", error);
+    }
+  };
+
+  return { storedValue, setValue, removeItem, clear, setStoredValue };
+};
+
+export { SupabaseProvider, useSupabase, useLocalStorage };
