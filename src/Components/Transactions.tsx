@@ -11,19 +11,25 @@ export const Transactions = () => {
     popup,
 
     tableData,
+    allTransactions,
   } = useSupabase();
 
   const { storedValue, setValue, clear } = useLocalStorage(
     "transactions",
-    tableData
+    allTransactions
   );
 
-  console.log(tableData);
-  console.log(storedValue);
+  console.log(allTransactions);
 
   useEffect(() => {
-    setValue(tableData);
-  }, [tableData]); // Run whenever allTransactions changes
+    setValue("transactions", allTransactions);
+    console.log(storedValue);
+  }, [allTransactions]);
+
+  useEffect(() => {
+    console.log(allTransactions);
+    console.log(storedValue);
+  }, [storedValue]);
 
   const data = storedValue;
 

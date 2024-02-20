@@ -6,18 +6,21 @@ import {
   useState,
 } from "react";
 import { SupabaseClient, createClient } from "@supabase/supabase-js";
+import { v4 as uuidv4 } from "uuid";
 
 type SupaBaseProviderProps = {
   children: ReactNode;
 };
 
 type IncomeType = {
+  id: any;
   amount?: number;
   category: string;
   date: Date;
 };
 
 type ExpenseType = {
+  id: any;
   amount?: number;
   category: string;
   date: Date;
@@ -82,12 +85,14 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   }, []);
 
   const [income, setIncome] = useState<IncomeType>({
+    id: uuidv4(),
     amount: undefined,
     category: "",
     date: new Date(),
   });
 
   const [expense, setExpense] = useState<ExpenseType>({
+    id: uuidv4(),
     amount: undefined,
     category: "",
     date: new Date(),
@@ -129,25 +134,6 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   };
 
   const addExp = () => {
-    const newTransaction = {
-      amount:
-        income.amount !== undefined
-          ? income.amount
-          : expense.amount !== undefined
-          ? expense.amount
-          : 0,
-      category:
-        income.category !== ""
-          ? income.category
-          : expense.category !== ""
-          ? expense.category
-          : "",
-      date: income.date || expense.date,
-    };
-
-    // Update tableData with the new transaction
-    setTableData([...tableData, newTransaction]);
-
     // Combine newly added income and expense with existing entries
     const allIncome = [...accIncome, income];
     const allExpenses = [...accExpenses, expense];
@@ -164,8 +150,44 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     // Update transactions with the filtered data
     setAllTransactions(filteredTransactions);
 
-    setIncome({ amount: undefined, category: "", date: new Date() });
-    setExpense({ amount: undefined, category: "", date: new Date() });
+    const newId = uuidv4();
+
+    const newTransaction = {
+      id: newId,
+
+      amount:
+        income.amount !== undefined
+          ? income.amount
+          : expense.amount !== undefined
+          ? expense.amount
+          : 0,
+
+      category:
+        income.category !== ""
+          ? income.category
+          : expense.category !== ""
+          ? expense.category
+          : "",
+
+      date: income.date || expense.date,
+    };
+
+    // Update tableData with the new transaction
+    setTableData([...tableData, newTransaction]);
+
+    console.log(allTransactions);
+    setIncome({
+      id: newId,
+      amount: undefined,
+      category: "",
+      date: new Date(),
+    });
+    setExpense({
+      id: newId,
+      amount: undefined,
+      category: "",
+      date: new Date(),
+    });
 
     balance();
     togglePopup();
@@ -225,11 +247,21 @@ const useLocalStorage = (key: string, initialValue: any[]) => {
   });
 
   // Set a new value in local storage
-  const setValue = (value: any[]) => {
+  const setValue = (key: string, value: any[]) => {
     try {
-      setStoredValue(() => {
-        localStorage.setItem(key, JSON.stringify(value));
-        return value;
+      setStoredValue((prevValue) => {
+        const newValue = [...prevValue];
+        value.forEach((item) => {
+          // Check if item with the same id exists
+          const existingItem = newValue.find(
+            (existing) => existing.id === item.id
+          );
+          if (!existingItem) {
+            newValue.push(item);
+          }
+        });
+        localStorage.setItem(key, JSON.stringify(newValue));
+        return newValue;
       });
     } catch (error) {
       console.error("Error saving to local storage:", error);

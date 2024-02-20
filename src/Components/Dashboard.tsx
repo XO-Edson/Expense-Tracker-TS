@@ -20,7 +20,6 @@ type DashboardProps = {
 
 const Dashboard = ({ user, isLoading }: DashboardProps) => {
   const {
-    tableData,
     accExpenses,
     accIncome,
     balance,
@@ -30,8 +29,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     allTransactions,
   } = useSupabase();
 
-  const { storedValue } = useLocalStorage("transactions", tableData);
-  console.log(storedValue);
+  const { storedValue } = useLocalStorage("transactions", allTransactions);
 
   const formatDate = (date: Date) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
