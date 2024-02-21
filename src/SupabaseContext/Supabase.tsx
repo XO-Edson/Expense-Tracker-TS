@@ -37,7 +37,7 @@ type TransactionType = IncomeType | ExpenseType;
 type ContextProps = {
   supabase: SupabaseClient;
   balance: () => number;
-  addExp: () => void;
+
   accExpenses: ExpenseType[];
   accIncome: IncomeType[];
   income: IncomeType;
@@ -53,6 +53,11 @@ type ContextProps = {
   setEntry: (e: any) => void;
   accSavings?: Savingstype[];
   setAccSavings: (e: any) => void;
+  editData: any;
+  setEditData: any;
+  handleAddOrEdit: (e: any) => void;
+  edit: boolean;
+  setEdit: (e: any) => void;
 };
 
 const SupabaseContext = createContext<ContextProps | undefined>(undefined);
@@ -98,6 +103,13 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     date: new Date(),
   });
 
+  const [editData, setEditData] = useState({
+    id: undefined,
+    amount: undefined,
+    category: "",
+    date: new Date(),
+  });
+
   const [accExpenses, setAccExpenses] = useState<ExpenseType[]>([]);
   const [accIncome, setAccIncome] = useState<IncomeType[]>([]);
 
@@ -110,6 +122,8 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   const [tableData, setTableData] = useState<any>([]);
 
   const [entry, setEntry] = useState<boolean>(false);
+
+  const [edit, setEdit] = useState<boolean>(true);
 
   function togglePopup() {
     setPopup((prev) => !prev);
@@ -193,12 +207,28 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     togglePopup();
   };
 
+  const handleAddOrEdit = () => {
+    if (edit) {
+      console.log("edit");
+      console.log(edit);
+    } else {
+      setEdit(false);
+      console.log(edit);
+
+      addExp();
+
+      // Edit existing data
+      // Call the appropriate function to edit data using editData state
+      // Reset input fields or close the popup after editing
+    }
+  };
+
   return (
     <SupabaseContext.Provider
       value={{
         supabase,
         balance,
-        addExp,
+
         accExpenses,
         accIncome,
         income,
@@ -214,6 +244,11 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         setEntry,
         accSavings,
         setAccSavings,
+        editData,
+        setEditData,
+        handleAddOrEdit,
+        edit,
+        setEdit,
       }}
     >
       {children}

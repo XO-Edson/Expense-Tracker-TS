@@ -7,10 +7,11 @@ const TransactionsPopup = () => {
     setIncome,
     expense,
     setExpense,
-    addExp,
+
     togglePopup,
     entry,
     setEntry,
+    handleAddOrEdit,
   } = useSupabase();
 
   const handleInputClick = (e: any) => {
@@ -30,73 +31,41 @@ const TransactionsPopup = () => {
         </div>
 
         <div className="inputs">
-          {entry ? (
-            <>
-              <h4>
-                Total Income:
-                <input
-                  type="number"
-                  value={income.amount || ""}
-                  onChange={(e) => {
-                    setIncome({
-                      ...income,
-                      amount: parseInt(e.target.value, 10),
-                    });
-                  }}
-                />
-              </h4>
-
-              <h3>
-                IncomeType:
-                <input
-                  type="text"
-                  value={income.category || ""}
-                  onChange={(e) =>
-                    setIncome({ ...income, category: e.target.value })
-                  }
-                />
-              </h3>
-              <DateTimePicker
-                onChange={(newDate) => setIncome({ ...income, date: newDate })}
-                value={income.date}
-              />
-            </>
-          ) : (
-            <>
-              <h4>
-                Total Expenses:
-                <input
-                  type="number"
-                  value={expense.amount || ""}
-                  onChange={(e) => {
-                    setExpense({
-                      ...expense,
-                      amount: parseInt(e.target.value, 10),
-                    });
-                  }}
-                />
-              </h4>
-              <h3>
-                ExpenseType:
-                <input
-                  type="text"
-                  value={expense.category || ""}
-                  onChange={(e) =>
-                    setExpense({ ...expense, category: e.target.value })
-                  }
-                />
-              </h3>
-              <DateTimePicker
-                onChange={(newDate) =>
-                  setExpense({ ...expense, date: newDate })
-                }
-                value={expense.date}
-              />
-            </>
-          )}
+          <h4>Total {entry ? "Income" : "Expenses"}:</h4>
+          <input
+            type="number"
+            value={entry ? income.amount || "" : expense.amount || ""}
+            onChange={(e) => {
+              entry
+                ? setIncome({ ...income, amount: parseInt(e.target.value, 10) })
+                : setExpense({
+                    ...expense,
+                    amount: parseInt(e.target.value, 10),
+                  });
+            }}
+          />
+          <h4>{entry ? "Income" : "Expense"} Category:</h4>
+          <input
+            type="text"
+            value={entry ? income.category || "" : expense.category || ""}
+            onChange={(e) =>
+              entry
+                ? setIncome({ ...income, category: e.target.value })
+                : setExpense({ ...expense, category: e.target.value })
+            }
+          />
+          <h4>Date:</h4>
+          <DateTimePicker
+            onChange={(newDate) =>
+              entry
+                ? setIncome({ ...income, date: newDate })
+                : setExpense({ ...expense, date: newDate })
+            }
+            value={entry ? income.date : expense.date}
+          />
         </div>
 
-        <button onClick={addExp}>ADD</button>
+        <button onClick={handleAddOrEdit}>ADD</button>
       </article>
     </div>
   );

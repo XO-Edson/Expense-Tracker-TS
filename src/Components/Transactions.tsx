@@ -11,7 +11,10 @@ export const Transactions = () => {
     popup,
 
     tableData,
+    setEntry,
+    entry,
     allTransactions,
+    edit,
   } = useSupabase();
 
   const { storedValue, setValue, clear } = useLocalStorage(
@@ -26,11 +29,26 @@ export const Transactions = () => {
     console.log(storedValue);
   }, [allTransactions]);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     console.log(allTransactions);
     console.log(storedValue);
-  }, [storedValue]);
+  }, [storedValue]); */
 
+  function handleEditPopup(entryId: any) {
+    const selectedEntry = storedValue.find((value) => value.id === entryId);
+
+    if (selectedEntry) {
+      // Populate the editData state with the data of the selected entry
+
+      // Open the edit popup
+
+      console.log(entryId);
+      console.log(selectedEntry);
+      console.log(edit);
+
+      togglePopup();
+    }
+  }
   const data = storedValue;
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -90,6 +108,9 @@ export const Transactions = () => {
                     {row.cells.map((cell) => (
                       <td {...cell.getCellProps()}>{cell.render("Cell")} </td>
                     ))}
+                    <button onClick={() => handleEditPopup(row.original.id)}>
+                      edit
+                    </button>
                   </tr>
                 );
               })}
