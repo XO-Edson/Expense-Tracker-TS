@@ -37,7 +37,7 @@ type TransactionType = IncomeType | ExpenseType;
 type ContextProps = {
   supabase: SupabaseClient;
   balance: () => number;
-
+  addExp: () => void;
   accExpenses: ExpenseType[];
   accIncome: IncomeType[];
   income: IncomeType;
@@ -54,8 +54,8 @@ type ContextProps = {
   accSavings?: Savingstype[];
   setAccSavings: (e: any) => void;
   editData: any;
-  setEditData: any;
-  handleAddOrEdit: (e: any) => void;
+  setEditData: (e: any) => void;
+
   edit: boolean;
   setEdit: (e: any) => void;
 };
@@ -127,6 +127,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
 
   function togglePopup() {
     setPopup((prev) => !prev);
+    setEdit(true);
   }
 
   const balance = (): number => {
@@ -207,28 +208,12 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     togglePopup();
   };
 
-  const handleAddOrEdit = () => {
-    if (edit) {
-      console.log("edit");
-      console.log(edit);
-    } else {
-      setEdit(false);
-      console.log(edit);
-
-      addExp();
-
-      // Edit existing data
-      // Call the appropriate function to edit data using editData state
-      // Reset input fields or close the popup after editing
-    }
-  };
-
   return (
     <SupabaseContext.Provider
       value={{
         supabase,
         balance,
-
+        addExp,
         accExpenses,
         accIncome,
         income,
@@ -246,7 +231,7 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         setAccSavings,
         editData,
         setEditData,
-        handleAddOrEdit,
+
         edit,
         setEdit,
       }}

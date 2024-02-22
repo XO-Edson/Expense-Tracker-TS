@@ -10,11 +10,10 @@ export const Transactions = () => {
     togglePopup,
     popup,
 
-    tableData,
-    setEntry,
-    entry,
     allTransactions,
-    edit,
+
+    setEdit,
+    setEditData,
   } = useSupabase();
 
   const { storedValue, setValue, clear } = useLocalStorage(
@@ -29,26 +28,25 @@ export const Transactions = () => {
     console.log(storedValue);
   }, [allTransactions]);
 
-  /*  useEffect(() => {
-    console.log(allTransactions);
-    console.log(storedValue);
-  }, [storedValue]); */
-
   function handleEditPopup(entryId: any) {
-    const selectedEntry = storedValue.find((value) => value.id === entryId);
+    const selectedEntry = storedValue.find(
+      (value: { id: any }) => value.id === entryId
+    );
 
     if (selectedEntry) {
-      // Populate the editData state with the data of the selected entry
-
-      // Open the edit popup
-
-      console.log(entryId);
       console.log(selectedEntry);
-      console.log(edit);
+
+      setEditData({ ...selectedEntry });
 
       togglePopup();
     }
   }
+
+  function toggleAddtransaction() {
+    togglePopup();
+    setEdit(false);
+  }
+
   const data = storedValue;
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
@@ -82,7 +80,7 @@ export const Transactions = () => {
 
       <section>
         <h2>TRANSACTIONS</h2>
-        <button onClick={togglePopup}>Add Transaction</button>
+        <button onClick={toggleAddtransaction}>Add Transaction</button>
         {popup && <TransactionsPopup />}
 
         <h5>Balance: {balance()}</h5>
@@ -108,7 +106,11 @@ export const Transactions = () => {
                     {row.cells.map((cell) => (
                       <td {...cell.getCellProps()}>{cell.render("Cell")} </td>
                     ))}
-                    <button onClick={() => handleEditPopup(row.original.id)}>
+                    <button
+                      onClick={() =>
+                        handleEditPopup(row.original && row.original.id)
+                      }
+                    >
                       edit
                     </button>
                   </tr>
