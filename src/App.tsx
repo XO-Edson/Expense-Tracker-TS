@@ -43,10 +43,7 @@ function App() {
           path="/dashboard"
           element={<Dashboard user={user} isLoading={isLoading} />}
         />
-        <Route
-          path="/transactions"
-          element={<Transactions storedValue={[]} />}
-        />
+        <Route path="/transactions" element={<Transactions />} />
       </Routes>
     </>
   );

@@ -48,35 +48,32 @@ const TransactionsPopup = () => {
       console.log("Edit data:", editData);
 
       if (indexToEdit !== -1) {
-        try {
-          console.log("Entry found for edit. Updating stored value...");
+        // Retrieve existing data from localStorage
+        const existingDataString = localStorage.getItem("transactions");
+        // Parse existing data or initialize as an empty array if it doesn't exist
+        const existingData: any[] = existingDataString
+          ? JSON.parse(existingDataString)
+          : [];
+        // Create a copy of existingData
+        const updatedData = [...existingData];
+        // Update the specific entry in the copy of existingData
+        updatedData[indexToEdit] = editData;
 
-          setStoredValue((prevStoredValue) => {
-            console.log("Previous stored value:", prevStoredValue);
+        // Update localStorage with the updated data
+        localStorage.setItem("transactions", JSON.stringify(updatedData));
+        console.log("Local storage updated.");
 
-            const updatedStoredValue = [...prevStoredValue];
+        // Update the storedValue state with the updated data
+        setStoredValue((prevStoredValue) => {
+          const updatedStoredValue = [...prevStoredValue];
+          updatedStoredValue[indexToEdit] = editData;
+          console.log("Updated stored value:", updatedStoredValue);
+          return updatedStoredValue;
+        });
 
-            updatedStoredValue[indexToEdit] = editData;
-
-            console.log("Updated stored value:", updatedStoredValue);
-
-            localStorage.setItem(
-              "transactions",
-              JSON.stringify(updatedStoredValue)
-            );
-
-            console.log("Local storage updated.");
-
-            return updatedStoredValue;
-          });
-        } catch (error) {
-          console.error("Error updating stored value:", error);
-        }
-      } else {
-        console.error("Item not found for edit.");
-        // Handle the case where the item to edit is not found
+        // Close the popup after updating the data
+        togglePopup();
       }
-      togglePopup();
     } else {
       setEdit(false);
       console.log(edit);
