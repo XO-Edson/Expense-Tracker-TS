@@ -25,13 +25,13 @@ const TransactionsPopup = () => {
     allTransactions
   );
 
-  const incomes = storedValue.map(
-    (income) => income.incomeCategory && income.amount
-  );
+  const incomes = storedValue
+    .filter((values) => values.incomeCategory)
+    .reduce((total, obj) => total + obj.amount, 0);
 
-  const expenses = storedValue.map(
-    (expense) => expense.expenseCategory && expense.amount
-  );
+  const expenses = storedValue
+    .filter((values) => values.expenseCategory)
+    .reduce((total, obj) => total + obj.amount, 0);
 
   const handleInputClick = (e: any) => {
     e.stopPropagation(); // Prevent click event from propagating to the background

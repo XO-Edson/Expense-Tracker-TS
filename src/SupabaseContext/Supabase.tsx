@@ -275,12 +275,29 @@ const useLocalStorage = (key: string, initialValue: any[]) => {
     }
   };
 
-  const removeItem = () => {
+  const removeItem = (key: string, id: any) => {
     try {
-      // Remove from local storage
-      localStorage.removeItem(key);
-      // Reset the stored value to an empty array
-      setStoredValue([]);
+      // Retrieve transactions from local storage
+      const storedData = localStorage.getItem(key);
+      let transactionsLocalStorage;
+
+      // Parse storedData if it's not null, otherwise use an empty array
+      if (storedData !== null) {
+        transactionsLocalStorage = JSON.parse(storedData);
+      } else {
+        transactionsLocalStorage = [];
+      }
+
+      // Filter transactions to remove the item with the given ID
+      const updatedTransactions = transactionsLocalStorage.filter(
+        (transaction: { id: any }) => transaction.id !== id
+      );
+
+      // Update local storage with the filtered transactions
+      localStorage.setItem(key, JSON.stringify(updatedTransactions));
+
+      // Optionally, you can update the state with the filtered transactions
+      setStoredValue(updatedTransactions);
     } catch (error) {
       console.error("Error removing from local storage:", error);
     }

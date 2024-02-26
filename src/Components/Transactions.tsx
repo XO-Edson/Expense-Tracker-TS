@@ -16,18 +16,18 @@ export const Transactions = () => {
     setEditData,
   } = useSupabase();
 
-  const { storedValue, setValue, clear } = useLocalStorage(
+  const { storedValue, setValue, clear, removeItem } = useLocalStorage(
     "transactions",
     allTransactions
   );
 
-  const incomes = storedValue.map(
-    (income) => income.incomeCategory && income.amount
-  );
+  const incomes = storedValue
+    .filter((values) => values.incomeCategory)
+    .reduce((total, obj) => total + obj.amount, 0);
 
-  const expenses = storedValue.map(
-    (expense) => expense.expenseCategory && expense.amount
-  );
+  const expenses = storedValue
+    .filter((values) => values.expenseCategory)
+    .reduce((total, obj) => total + obj.amount, 0);
 
   console.log(allTransactions);
 
@@ -56,7 +56,6 @@ export const Transactions = () => {
   }
 
   const data = storedValue;
-  console.log(data);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
@@ -125,6 +124,17 @@ export const Transactions = () => {
                       }
                     >
                       edit
+                    </button>
+
+                    <button
+                      onClick={() =>
+                        removeItem(
+                          "transactions",
+                          row.original && row.original.id
+                        )
+                      }
+                    >
+                      Delete
                     </button>
                   </tr>
                 );

@@ -32,12 +32,12 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
   const { storedValue } = useLocalStorage("transactions", allTransactions);
 
   const incomes = storedValue
-    .filter((values) => values.incomeCategory) // Filter to include only objects with "incomeCategory" property
-    .reduce((total, obj) => total + obj.amount, 0); // Calculate the sum of "amount" properties
+    .filter((values) => values.incomeCategory)
+    .reduce((total, obj) => total + obj.amount, 0);
 
   const expenses = storedValue
-    .filter((values) => values.expenseCategory) // Filter to include only objects with "incomeCategory" property
-    .reduce((total, obj) => total + obj.amount, 0); // Calculate the sum of "amount" properties
+    .filter((values) => values.expenseCategory)
+    .reduce((total, obj) => total + obj.amount, 0);
 
   console.log(incomes);
   console.log(expenses);
