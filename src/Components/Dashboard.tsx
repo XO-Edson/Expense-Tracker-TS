@@ -31,6 +31,17 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
 
   const { storedValue } = useLocalStorage("transactions", allTransactions);
 
+  const incomes = storedValue
+    .filter((values) => values.incomeCategory) // Filter to include only objects with "incomeCategory" property
+    .reduce((total, obj) => total + obj.amount, 0); // Calculate the sum of "amount" properties
+
+  const expenses = storedValue
+    .filter((values) => values.expenseCategory) // Filter to include only objects with "incomeCategory" property
+    .reduce((total, obj) => total + obj.amount, 0); // Calculate the sum of "amount" properties
+
+  console.log(incomes);
+  console.log(expenses);
+
   const formatDate = (date: Date) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
       month: "short",
@@ -101,7 +112,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             <div className="card">
               <h5>Available Balance</h5>
 
-              <h1>$ {balance()}</h1>
+              <h1>$ {balance(incomes, expenses)}</h1>
               <p>**** 1234</p>
             </div>
 
@@ -123,7 +134,10 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
               <section className="transactions-display">
                 {storedValue.map((accTransactions: any, index: number) => (
                   <ul key={index}>
-                    <li>{accTransactions.category}</li>
+                    <li>
+                      {accTransactions.incomeCategory ||
+                        accTransactions.expenseCategory}
+                    </li>
                     <li>{accTransactions.amount}</li>
                     <li>
                       {new Date(accTransactions.date).toLocaleDateString()}

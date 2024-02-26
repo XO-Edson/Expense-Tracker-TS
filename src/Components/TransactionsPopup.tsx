@@ -25,6 +25,14 @@ const TransactionsPopup = () => {
     allTransactions
   );
 
+  const incomes = storedValue.map(
+    (income) => income.incomeCategory && income.amount
+  );
+
+  const expenses = storedValue.map(
+    (expense) => expense.expenseCategory && expense.amount
+  );
+
   const handleInputClick = (e: any) => {
     e.stopPropagation(); // Prevent click event from propagating to the background
   };
@@ -78,7 +86,7 @@ const TransactionsPopup = () => {
       setEdit(false);
       console.log(edit);
 
-      addExp();
+      addExp(incomes, expenses);
 
       // Edit existing data
       // Call the appropriate function to edit data using editData state
@@ -115,14 +123,19 @@ const TransactionsPopup = () => {
 
             <input
               type="text"
-              value={editData.category || ""}
+              value={editData.incomeCategory || editData.expenseCategory}
               onChange={(e) =>
                 setEditData((prevEditData: any) => ({
                   ...prevEditData,
-                  category: e.target.value,
+                  incomeCategory: editData.incomeCategory ? e.target.value : "",
+                  expenseCategory: editData.incomeCategory
+                    ? ""
+                    : e.target.value,
                 }))
               }
             />
+
+            {/* convert to income/expense category */}
 
             <DateTimePicker
               onChange={(newDate) =>
@@ -155,11 +168,15 @@ const TransactionsPopup = () => {
             <h4>{entry ? "Income" : "Expense"} Category:</h4>
             <input
               type="text"
-              value={entry ? income.category || "" : expense.category || ""}
+              value={
+                entry
+                  ? income.incomeCategory || ""
+                  : expense.expenseCategory || ""
+              }
               onChange={(e) =>
                 entry
-                  ? setIncome({ ...income, category: e.target.value })
-                  : setExpense({ ...expense, category: e.target.value })
+                  ? setIncome({ ...income, incomeCategory: e.target.value })
+                  : setExpense({ ...expense, expenseCategory: e.target.value })
               }
             />
             <h4>Date:</h4>

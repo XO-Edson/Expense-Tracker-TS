@@ -15,14 +15,14 @@ type SupaBaseProviderProps = {
 type IncomeType = {
   id: any;
   amount?: number;
-  category: string;
+  incomeCategory: string;
   date: Date;
 };
 
 type ExpenseType = {
   id: any;
   amount?: number;
-  category: string;
+  expenseCategory: string;
   date: Date;
 };
 
@@ -36,8 +36,8 @@ type TransactionType = IncomeType | ExpenseType;
 
 type ContextProps = {
   supabase: SupabaseClient;
-  balance: () => number;
-  addExp: () => void;
+  balance: (incomes: any, exoenses: any) => number;
+  addExp: (incomes: any, expenses: any) => void;
   accExpenses: ExpenseType[];
   accIncome: IncomeType[];
   income: IncomeType;
@@ -92,21 +92,22 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   const [income, setIncome] = useState<IncomeType>({
     id: uuidv4(),
     amount: undefined,
-    category: "",
+    incomeCategory: "",
     date: new Date(),
   });
 
   const [expense, setExpense] = useState<ExpenseType>({
     id: uuidv4(),
     amount: undefined,
-    category: "",
+    expenseCategory: "",
     date: new Date(),
   });
 
   const [editData, setEditData] = useState({
     id: undefined,
     amount: undefined,
-    category: "",
+    incomeCategory: "", // Set initial value to an empty string
+    expenseCategory: "", // Set initial value to an empty string
     date: new Date(),
   });
 
@@ -130,25 +131,11 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     setEdit(true);
   }
 
-  const balance = (): number => {
-    if (income.amount !== 0) {
-      const totalExpenses = accExpenses.reduce(
-        (sum, obj) => sum + (obj.amount || 0),
-        0
-      );
-
-      const totalIncome = accIncome.reduce(
-        (sum, obj) => sum + (obj.amount || 0),
-        0
-      );
-
-      return totalIncome - totalExpenses;
-    } else {
-      return 0;
-    }
+  const balance = (incomes: any, expenses: any): number => {
+    return incomes - expenses;
   };
 
-  const addExp = () => {
+  const addExp = (incomes: any, expenses: any) => {
     // Combine newly added income and expense with existing entries
     const allIncome = [...accIncome, income];
     const allExpenses = [...accExpenses, expense];
@@ -178,10 +165,10 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
           : 0,
 
       category:
-        income.category !== ""
-          ? income.category
-          : expense.category !== ""
-          ? expense.category
+        income.incomeCategory !== ""
+          ? income.incomeCategory
+          : expense.expenseCategory !== ""
+          ? expense.expenseCategory
           : "",
 
       date: income.date || expense.date,
@@ -194,17 +181,17 @@ const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     setIncome({
       id: newId,
       amount: undefined,
-      category: "",
+      incomeCategory: "",
       date: new Date(),
     });
     setExpense({
       id: newId,
       amount: undefined,
-      category: "",
+      expenseCategory: "",
       date: new Date(),
     });
 
-    balance();
+    balance(incomes, expenses);
     togglePopup();
   };
 

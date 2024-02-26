@@ -21,6 +21,14 @@ export const Transactions = () => {
     allTransactions
   );
 
+  const incomes = storedValue.map(
+    (income) => income.incomeCategory && income.amount
+  );
+
+  const expenses = storedValue.map(
+    (expense) => expense.expenseCategory && expense.amount
+  );
+
   console.log(allTransactions);
 
   useEffect(() => {
@@ -48,6 +56,7 @@ export const Transactions = () => {
   }
 
   const data = storedValue;
+  console.log(data);
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({
@@ -60,7 +69,11 @@ export const Transactions = () => {
           },
           {
             Header: "Category",
-            accessor: "category",
+            accessor: (row: any) =>
+              `${row.incomeCategory || ""}${
+                row.expenseCategory ? ` ${row.expenseCategory}` : ""
+              }`,
+            Cell: ({ value }: { value: string }) => <span>{value}</span>,
           },
           {
             Header: "Date",
@@ -83,7 +96,7 @@ export const Transactions = () => {
         <button onClick={toggleAddtransaction}>Add Transaction</button>
         {popup && <TransactionsPopup />}
 
-        <h5>Balance: {balance()}</h5>
+        <h5>Balance: {balance(incomes, expenses)}</h5>
 
         <section className="transactions-display">
           <table {...getTableProps()}>
@@ -125,7 +138,7 @@ export const Transactions = () => {
         <div className="card">
           <h5>Available Balance</h5>
 
-          <h1>$ {balance()}</h1>
+          <h1>$ {balance(incomes, expenses)}</h1>
           <p>**** 1234</p>
         </div>
       </section>
