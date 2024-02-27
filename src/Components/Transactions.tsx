@@ -1,4 +1,5 @@
-import { useLocalStorage, useSupabase } from "../SupabaseContext/Supabase";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import useSupabase from "../Hooks/useSupabase";
 import Sidebar from "./Sidebar";
 import TransactionsPopup from "./TransactionsPopup";
 import { useTable } from "react-table";
@@ -20,6 +21,8 @@ export const Transactions = () => {
     "transactions",
     allTransactions
   );
+
+  console.log(storedValue);
 
   const incomes = storedValue
     .filter((values) => values.incomeCategory)

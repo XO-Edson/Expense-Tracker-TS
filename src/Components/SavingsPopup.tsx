@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Savingstype, useSupabase } from "../SupabaseContext/Supabase";
+import { Savingstype } from "../SupabaseContext/Supabase";
+import useSupabase from "../Hooks/useSupabase";
 
 const SavingsPopup = () => {
   const { togglePopup, accSavings, setAccSavings } = useSupabase();

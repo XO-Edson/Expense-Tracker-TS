@@ -1,5 +1,6 @@
 import { useEffect } from "react";
-import { useLocalStorage, useSupabase } from "../SupabaseContext/Supabase";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import useSupabase from "../Hooks/useSupabase";
 import DateTimePicker from "react-datetime-picker";
 
 const TransactionsPopup = () => {

@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
-import { useLocalStorage, useSupabase } from "../SupabaseContext/Supabase";
+import useLocalStorage from "../Hooks/useLocalStorage";
+import useSupabase from "../Hooks/useSupabase";
 import Sidebar from "./Sidebar";
 import { Line } from "react-chartjs-2";
 import {
@@ -38,9 +39,6 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
   const expenses = storedValue
     .filter((values) => values.expenseCategory)
     .reduce((total, obj) => total + obj.amount, 0);
-
-  console.log(incomes);
-  console.log(expenses);
 
   const formatDate = (date: Date) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
