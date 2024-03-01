@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import TransactionsPopup from "./TransactionsPopup";
 import { useTable } from "react-table";
 import { useEffect, useMemo } from "react";
+import { Savingstype } from "../SupabaseContext/Supabase";
 
 export const Transactions = () => {
   const {
@@ -15,20 +16,26 @@ export const Transactions = () => {
 
     setEdit,
     setEditData,
+    setAllTransactions,
+    accSavings,
   } = useSupabase();
 
-  const { storedValue, setValue, clear, removeItem } = useLocalStorage(
+  const initializedAccSavings: Savingstype[] = accSavings || [];
+
+  const { storedValue1, setValue, clear, removeItem } = useLocalStorage(
     "transactions",
-    allTransactions
+    allTransactions,
+    "savings",
+    initializedAccSavings
   );
 
-  console.log(storedValue);
+  console.log(storedValue1);
 
-  const incomes = storedValue
+  const incomes = storedValue1
     .filter((values) => values.incomeCategory)
     .reduce((total, obj) => total + obj.amount, 0);
 
-  const expenses = storedValue
+  const expenses = storedValue1
     .filter((values) => values.expenseCategory)
     .reduce((total, obj) => total + obj.amount, 0);
 
@@ -36,11 +43,15 @@ export const Transactions = () => {
 
   useEffect(() => {
     setValue("transactions", allTransactions);
-    console.log(storedValue);
+    console.log(storedValue1);
+
+    return () => {
+      setAllTransactions([]);
+    };
   }, [allTransactions]);
 
   function handleEditPopup(entryId: any) {
-    const selectedEntry = storedValue.find(
+    const selectedEntry = storedValue1.find(
       (value: { id: any }) => value.id === entryId
     );
 
@@ -58,7 +69,7 @@ export const Transactions = () => {
     setEdit(false);
   }
 
-  const data = storedValue;
+  const data = storedValue1;
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({

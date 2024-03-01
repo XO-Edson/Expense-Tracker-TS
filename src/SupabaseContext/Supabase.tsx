@@ -21,6 +21,7 @@ type ExpenseType = {
 };
 
 export type Savingstype = {
+  id: any;
   category: string;
   targetAmount?: number;
   depositAmount?: number;
@@ -103,15 +104,15 @@ export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   const [editData, setEditData] = useState({
     id: undefined,
     amount: undefined,
-    incomeCategory: "", // Set initial value to an empty string
-    expenseCategory: "", // Set initial value to an empty string
+    incomeCategory: "",
+    expenseCategory: "",
     date: new Date(),
   });
 
   const [accExpenses, setAccExpenses] = useState<ExpenseType[]>([]);
   const [accIncome, setAccIncome] = useState<IncomeType[]>([]);
 
-  const [accSavings, setAccSavings] = useState<Savingstype[]>();
+  const [accSavings, setAccSavings] = useState<Savingstype[]>([]);
 
   const [allTransactions, setAllTransactions] = useState<TransactionType[]>([]);
 

@@ -21,7 +21,6 @@ function App() {
           console.error("Error fetching user data:", error);
         } else if (data?.user) {
           setUser(data.user);
-          console.log("User data:", data.user);
         }
       } catch (error) {
         console.error("Unexpected error:", error);

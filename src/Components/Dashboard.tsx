@@ -3,6 +3,8 @@ import useLocalStorage from "../Hooks/useLocalStorage";
 import useSupabase from "../Hooks/useSupabase";
 import Sidebar from "./Sidebar";
 import { Line } from "react-chartjs-2";
+import SavingsPopup from "./SavingsPopup";
+
 import {
   Chart,
   LineElement,
@@ -10,7 +12,8 @@ import {
   LinearScale,
   PointElement,
 } from "chart.js";
-import SavingsPopup from "./SavingsPopup";
+import { Savingstype } from "../SupabaseContext/Supabase";
+import { useEffect } from "react";
 
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
@@ -28,15 +31,35 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     popup,
     accSavings,
     allTransactions,
+    setEdit,
   } = useSupabase();
 
-  const { storedValue } = useLocalStorage("transactions", allTransactions);
+  const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const incomes = storedValue
+  const { storedValue1, storedValue2, setValue } = useLocalStorage(
+    "transactions",
+    allTransactions,
+    "savings",
+    initializedAccSavings
+  );
+
+  function toggleAddSavings() {
+    togglePopup();
+    setEdit(false);
+  }
+
+  useEffect(() => {
+    setValue("savings", initializedAccSavings);
+    console.log(storedValue1);
+  }, [accSavings]);
+
+  console.log(storedValue2);
+
+  const incomes = storedValue1
     .filter((values) => values.incomeCategory)
     .reduce((total, obj) => total + obj.amount, 0);
 
-  const expenses = storedValue
+  const expenses = storedValue1
     .filter((values) => values.expenseCategory)
     .reduce((total, obj) => total + obj.amount, 0);
 
@@ -130,7 +153,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
               <h4>Recent Transactions</h4>
 
               <section className="transactions-display">
-                {storedValue.map((accTransactions: any, index: number) => (
+                {storedValue1.map((accTransactions: any, index: number) => (
                   <ul key={index}>
                     <li>
                       {accTransactions.incomeCategory ||
@@ -157,8 +180,8 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             {popup && <SavingsPopup />}
 
             <div className="savings-container">
-              <button onClick={togglePopup}>+</button>
-              {accSavings?.map((savings) => (
+              <button onClick={toggleAddSavings}>+</button>
+              {storedValue2?.map((savings) => (
                 <div className="savings">
                   <h4>{savings.category}</h4>
                   <p>DEPOSIT: {savings.depositAmount}</p>

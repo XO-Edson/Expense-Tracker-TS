@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import useSupabase from "../Hooks/useSupabase";
 import DateTimePicker from "react-datetime-picker";
+import { Savingstype } from "../SupabaseContext/Supabase";
 
 const TransactionsPopup = () => {
   const {
@@ -19,18 +20,23 @@ const TransactionsPopup = () => {
     setEditData,
     editData,
     allTransactions,
+    accSavings,
   } = useSupabase();
 
-  const { storedValue, setStoredValue } = useLocalStorage(
+  const initializedAccSavings: Savingstype[] = accSavings || [];
+
+  const { storedValue1, setStoredValue1 } = useLocalStorage(
     "transactions",
-    allTransactions
+    allTransactions,
+    "savings",
+    initializedAccSavings
   );
 
-  const incomes = storedValue
+  const incomes = storedValue1
     .filter((values) => values.incomeCategory)
     .reduce((total, obj) => total + obj.amount, 0);
 
-  const expenses = storedValue
+  const expenses = storedValue1
     .filter((values) => values.expenseCategory)
     .reduce((total, obj) => total + obj.amount, 0);
 
@@ -49,7 +55,7 @@ const TransactionsPopup = () => {
   const handleAddOrEdit = () => {
     if (edit) {
       // Find the index of the entry to be edited
-      const indexToEdit = storedValue.findIndex(
+      const indexToEdit = storedValue1.findIndex(
         (value: { id: any }) => value.id === editData.id
       );
 
@@ -73,7 +79,7 @@ const TransactionsPopup = () => {
         console.log("Local storage updated.");
 
         // Update the storedValue state with the updated data
-        setStoredValue((prevStoredValue) => {
+        setStoredValue1((prevStoredValue) => {
           const updatedStoredValue = [...prevStoredValue];
           updatedStoredValue[indexToEdit] = editData;
           console.log("Updated stored value:", updatedStoredValue);
@@ -96,8 +102,8 @@ const TransactionsPopup = () => {
   };
 
   useEffect(() => {
-    console.log("Stored Value:", storedValue);
-  }, [storedValue]); // Log storedValue after it's updated
+    console.log("Stored Value:", storedValue1);
+  }, [storedValue1]); // Log storedValue after it's updated
 
   return (
     <div className="input-fields-background" onClick={togglePopup}>
