@@ -197,7 +197,7 @@ article {
   margin-left: 1rem;
 }
 
-.savings-container button {
+.savings-container .add-btn {
   height: 180px;
   width: 150px;
   white-space: nowrap;

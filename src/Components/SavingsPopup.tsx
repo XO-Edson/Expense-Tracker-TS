@@ -9,7 +9,8 @@ const SavingsPopup = () => {
     togglePopup,
     accSavings,
     setAccSavings,
-    editData,
+    editSavings,
+    setEditSavings,
     edit,
     setEdit,
     allTransactions,
@@ -17,7 +18,7 @@ const SavingsPopup = () => {
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue2, setStoredValue2 } = useLocalStorage(
+  const { storedValue2, setStoredValue2, clear } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
@@ -25,7 +26,6 @@ const SavingsPopup = () => {
   );
 
   console.log(accSavings);
-  console.log(edit);
 
   const handleInputClick = (e: any) => {
     e.stopPropagation(); // Prevent click event from propagating to the background
@@ -45,18 +45,19 @@ const SavingsPopup = () => {
   }
 
   useEffect(() => {
-    console.log("Updated editData:", editData);
-  }, [editData]);
+    console.log("Updated editData:", editSavings);
+  }, [editSavings]);
 
+  console.log(edit);
   const handleAddOrEdit = () => {
     if (edit) {
       // Find the index of the entry to be edited
       const indexToEdit = storedValue2.findIndex(
-        (value: { id: any }) => value.id === editData.id
+        (value: { id: any }) => value.id === editSavings.id
       );
 
       console.log("Index to edit:", indexToEdit);
-      console.log("Edit data:", editData);
+      console.log("Edit data:", editSavings);
 
       if (indexToEdit !== -1) {
         // Retrieve existing data from localStorage
@@ -68,7 +69,7 @@ const SavingsPopup = () => {
         // Create a copy of existingData
         const updatedData = [...existingData];
         // Update the specific entry in the copy of existingData
-        updatedData[indexToEdit] = editData;
+        updatedData[indexToEdit] = editSavings;
 
         // Update localStorage with the updated data
         localStorage.setItem("savings", JSON.stringify(updatedData));
@@ -77,7 +78,7 @@ const SavingsPopup = () => {
         // Update the storedValue state with the updated data
         setStoredValue2((prevStoredValue) => {
           const updatedStoredValue = [...prevStoredValue];
-          updatedStoredValue[indexToEdit] = editData;
+          updatedStoredValue[indexToEdit] = editSavings;
           console.log("Updated stored value:", updatedStoredValue);
           return updatedStoredValue;
         });
@@ -109,18 +110,18 @@ const SavingsPopup = () => {
               <h3>Category</h3>
               <input
                 type="text"
-                value={editData?.category}
+                value={editSavings?.category}
                 onChange={(e) =>
-                  setSavings({ ...editData, category: e.target.value })
+                  setEditSavings({ ...editSavings, category: e.target.value })
                 }
               />
               <h3>Target amount</h3>
               <input
                 type="number"
-                value={editData?.targetAmount}
+                value={editSavings?.targetAmount}
                 onChange={(e) =>
-                  setSavings({
-                    ...editData,
+                  setEditSavings({
+                    ...editSavings,
                     targetAmount: parseInt(e.target.value, 10) || undefined,
                   })
                 }
@@ -129,16 +130,16 @@ const SavingsPopup = () => {
               <h3>Deposit Amount</h3>
               <input
                 type="number "
-                value={editData?.depositAmount}
+                value={editSavings?.depositAmount}
                 onChange={(e) =>
-                  setSavings({
-                    ...editData,
+                  setEditSavings({
+                    ...editSavings,
                     depositAmount: parseInt(e.target.value, 10) || undefined,
                   })
                 }
               />
 
-              <button onClick={addSavings}>Add</button>
+              <button onClick={handleAddOrEdit}>Edit</button>
             </div>
           ) : (
             <div className="savings-plan-container">

@@ -16,7 +16,6 @@ export const Transactions = () => {
 
     setEdit,
     setEditData,
-    setAllTransactions,
     accSavings,
   } = useSupabase();
 
@@ -44,10 +43,6 @@ export const Transactions = () => {
   useEffect(() => {
     setValue("transactions", allTransactions);
     console.log(storedValue1);
-
-    return () => {
-      setAllTransactions([]);
-    };
   }, [allTransactions]);
 
   function handleEditPopup(entryId: any) {

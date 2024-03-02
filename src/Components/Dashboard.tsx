@@ -32,11 +32,12 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     accSavings,
     allTransactions,
     setEdit,
+    setEditSavings,
   } = useSupabase();
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue1, storedValue2, setValue } = useLocalStorage(
+  const { storedValue1, storedValue2, setValue, removeItem } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
@@ -74,6 +75,20 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
   const formattedLabels = allTransactions.map((transactions) =>
     formatDate(transactions.date)
   );
+
+  function handleEditPopup(entryId: any) {
+    const selectedEntry = storedValue2.find(
+      (value: { id: any }) => value.id === entryId
+    );
+
+    if (selectedEntry) {
+      console.log(selectedEntry);
+
+      setEditSavings({ ...selectedEntry });
+
+      togglePopup();
+    }
+  }
 
   const data = {
     labels: formattedLabels,
@@ -180,9 +195,14 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             {popup && <SavingsPopup />}
 
             <div className="savings-container">
-              <button onClick={toggleAddSavings}>+</button>
+              <button className="add-btn" onClick={toggleAddSavings}>
+                +
+              </button>
               {storedValue2?.map((savings) => (
                 <div className="savings">
+                  <button onClick={() => handleEditPopup(savings.id)}>
+                    Edit
+                  </button>
                   <h4>{savings.category}</h4>
                   <p>DEPOSIT: {savings.depositAmount}</p>
                   <p>TARGET: {savings.targetAmount}</p>
@@ -208,6 +228,9 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
                         : 0}
                       %
                     </h4>
+                    <button onClick={() => removeItem("savings", savings.id)}>
+                      Delete
+                    </button>
                   </div>
                 </div>
               ))}

@@ -51,6 +51,8 @@ type ContextProps = {
   setAccSavings: (e: any) => void;
   editData: any;
   setEditData: (e: any) => void;
+  editSavings: any;
+  setEditSavings: (e: any) => void;
 
   edit: boolean;
   setEdit: (e: any) => void;
@@ -108,6 +110,8 @@ export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     expenseCategory: "",
     date: new Date(),
   });
+
+  const [editSavings, setEditSavings] = useState<Savingstype>();
 
   const [accExpenses, setAccExpenses] = useState<ExpenseType[]>([]);
   const [accIncome, setAccIncome] = useState<IncomeType[]>([]);
@@ -220,6 +224,9 @@ export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
 
         edit,
         setEdit,
+
+        editSavings,
+        setEditSavings,
       }}
     >
       {children}
