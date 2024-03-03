@@ -24,8 +24,6 @@ type DashboardProps = {
 
 const Dashboard = ({ user, isLoading }: DashboardProps) => {
   const {
-    accExpenses,
-    accIncome,
     balance,
     togglePopup,
     popup,
@@ -54,8 +52,6 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     console.log(storedValue1);
   }, [accSavings]);
 
-  console.log(storedValue2);
-
   const incomes = storedValue1
     .filter((values) => values.incomeCategory)
     .reduce((total, obj) => total + obj.amount, 0);
@@ -72,7 +68,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     return formattedDate;
   };
 
-  const formattedLabels = allTransactions.map((transactions) =>
+  const formattedLabels = storedValue1.map((transactions) =>
     formatDate(transactions.date)
   );
 
@@ -95,18 +91,22 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     datasets: [
       {
         label: "Expenses",
-        data: accExpenses
-          .filter((expense) => typeof expense.amount === "number")
-          .map((expense) => expense.amount),
+        data: storedValue1
+          .filter((expense) => {
+            return expense.expenseCategory;
+          })
+          .map((obj) => obj.amount),
         borderColor: "#008000",
         backgroundColor: "transparent",
         tension: 0.4,
       },
       {
         label: "Income",
-        data: accIncome
-          .filter((income) => typeof income.amount === "number")
-          .map((income) => income.amount),
+        data: storedValue1
+          .filter((income) => {
+            return income.incomeCategory;
+          })
+          .map((obj) => obj.amount),
         borderColor: "red",
         backgroundColor: "transparent",
         tension: 0.4,
@@ -116,12 +116,20 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
 
   const navigate = useNavigate();
 
-  const totalExpenses = accExpenses.reduce(
+  const filterIncomes = storedValue1.filter(
+    (incomes) => incomes.incomeCategory
+  );
+
+  const filterExpenses = storedValue1.filter(
+    (expense) => expense.expenseCategory
+  );
+
+  const totalExpenses = filterExpenses.reduce(
     (sum, obj) => sum + (obj.amount || 0),
     0
   );
 
-  const totalIncome = accIncome.reduce(
+  const totalIncome = filterIncomes.reduce(
     (sum, obj) => sum + (obj.amount || 0),
     0
   );
