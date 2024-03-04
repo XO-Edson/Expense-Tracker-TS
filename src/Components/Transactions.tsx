@@ -5,6 +5,7 @@ import TransactionsPopup from "./TransactionsPopup";
 import { useTable } from "react-table";
 import { useEffect, useMemo } from "react";
 import { Savingstype } from "../SupabaseContext/Supabase";
+import Header from "./Header";
 
 export const Transactions = () => {
   const {
@@ -97,9 +98,10 @@ export const Transactions = () => {
 
   return (
     <main>
+      <Header />
       <Sidebar userEmail={""} />
 
-      <section>
+      <section className="transactions">
         <h2>TRANSACTIONS</h2>
         <button onClick={toggleAddtransaction}>Add Transaction</button>
         {popup && <TransactionsPopup />}
@@ -153,7 +155,7 @@ export const Transactions = () => {
         </section>
       </section>
 
-      <section>
+      <section className="transactions-card">
         <div className="card">
           <h5>Available Balance</h5>
 

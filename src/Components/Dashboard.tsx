@@ -14,6 +14,7 @@ import {
 } from "chart.js";
 import { Savingstype } from "../SupabaseContext/Supabase";
 import { useEffect } from "react";
+import Header from "./Header";
 
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
@@ -147,6 +148,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
         </div>
       ) : (
         <main>
+          <Header />
           <Sidebar userEmail={user.email} />
 
           <article>
@@ -175,14 +177,18 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             <div className="recent-transactions">
               <h4>Recent Transactions</h4>
 
-              <section className="transactions-display">
+              <section className="transactions-display-dashboard">
                 {storedValue1.map((accTransactions: any, index: number) => (
                   <ul key={index}>
                     <li>
                       {accTransactions.incomeCategory ||
                         accTransactions.expenseCategory}
                     </li>
-                    <li>{accTransactions.amount}</li>
+                    <li>
+                      {accTransactions.incomeCategory
+                        ? `+${accTransactions.amount}`
+                        : `-${accTransactions.amount}`}
+                    </li>
                     <li>
                       {new Date(accTransactions.date).toLocaleDateString()}
                     </li>
@@ -199,7 +205,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
               <Line data={data} />
             </div>
 
-            <h3>Savings Plan</h3>
+            <h3 className="heading">Savings Plan</h3>
             {popup && <SavingsPopup />}
 
             <div className="savings-container">

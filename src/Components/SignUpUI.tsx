@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import useSupabase from "../Hooks/useSupabase";
 import { Auth } from "@supabase/auth-ui-react";
 import { useEffect } from "react";
+import Header from "./Header";
 
 const SignUpUI = () => {
   const navigate = useNavigate();
@@ -26,8 +27,9 @@ const SignUpUI = () => {
 
   return (
     <section className="signup">
+      <Header />
       <h1>Welcome</h1>
-      <h3>Expense tracker</h3>
+
       <Auth
         supabaseClient={supabase}
         theme="dark"

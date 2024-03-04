@@ -4,7 +4,6 @@ import { Transactions } from "./Components/Transactions";
 import Dashboard from "./Components/Dashboard";
 import { useEffect, useState } from "react";
 import useSupabase from "./Hooks/useSupabase";
-import Header from "./Components/Header";
 
 function App() {
   const [user, setUser] = useState<any>("e");
@@ -34,7 +33,6 @@ function App() {
 
   return (
     <>
-      <Header />
       <Routes>
         <Route path="/" element={<SignUpUI />} />
 
