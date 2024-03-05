@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import useSupabase from "../Hooks/useSupabase";
 import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
+
 import { Savingstype } from "../SupabaseContext/Supabase";
 
 const TransactionsPopup = () => {
@@ -142,17 +144,17 @@ const TransactionsPopup = () => {
               }
             />
 
-            {/* convert to income/expense category */}
-
-            <DateTimePicker
-              onChange={(newDate) =>
-                setEditData((prevEditData: any) => ({
-                  ...prevEditData,
-                  date: newDate,
-                }))
-              }
-              value={editData.date}
-            />
+            <div>
+              <DateTimePicker
+                onChange={(newDate) =>
+                  setEditData((prevEditData: any) => ({
+                    ...prevEditData,
+                    date: newDate,
+                  }))
+                }
+                value={editData.date}
+              />
+            </div>
           </div>
         ) : (
           <div className="inputs">
@@ -187,14 +189,16 @@ const TransactionsPopup = () => {
               }
             />
             <h4>Date:</h4>
-            <DateTimePicker
-              onChange={(newDate) =>
-                entry
-                  ? setIncome({ ...income, date: newDate })
-                  : setExpense({ ...expense, date: newDate })
-              }
-              value={entry ? income.date : expense.date}
-            />
+            <div>
+              <DateTimePicker
+                onChange={(newDate) =>
+                  entry
+                    ? setIncome({ ...income, date: newDate })
+                    : setExpense({ ...expense, date: newDate })
+                }
+                value={entry ? income.date : expense.date}
+              />
+            </div>
           </div>
         )}
 

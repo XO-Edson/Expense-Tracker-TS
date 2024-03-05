@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import useSupabase from "./Hooks/useSupabase";
 
 function App() {
-  const [user, setUser] = useState<any>("e");
+  const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const { supabase } = useSupabase();
 

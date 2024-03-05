@@ -129,24 +129,25 @@ export const Transactions = () => {
                     {row.cells.map((cell) => (
                       <td {...cell.getCellProps()}>{cell.render("Cell")} </td>
                     ))}
-                    <button
-                      onClick={() =>
-                        handleEditPopup(row.original && row.original.id)
-                      }
-                    >
-                      edit
-                    </button>
-
-                    <button
-                      onClick={() =>
-                        removeItem(
-                          "transactions",
-                          row.original && row.original.id
-                        )
-                      }
-                    >
-                      Delete
-                    </button>
+                    <div className="table-buttons">
+                      <button
+                        onClick={() =>
+                          handleEditPopup(row.original && row.original.id)
+                        }
+                      >
+                        edit
+                      </button>
+                      <button
+                        onClick={() =>
+                          removeItem(
+                            "transactions",
+                            row.original && row.original.id
+                          )
+                        }
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </tr>
                 );
               })}

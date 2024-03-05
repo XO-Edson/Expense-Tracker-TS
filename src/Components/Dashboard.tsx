@@ -97,7 +97,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             return expense.expenseCategory;
           })
           .map((obj) => obj.amount),
-        borderColor: "#008000",
+        borderColor: "red",
         backgroundColor: "transparent",
         tension: 0.4,
       },
@@ -108,7 +108,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             return income.incomeCategory;
           })
           .map((obj) => obj.amount),
-        borderColor: "red",
+        borderColor: "#008000",
         backgroundColor: "transparent",
         tension: 0.4,
       },
@@ -201,7 +201,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
           {/* Graph column */}
           <article className="graph-column">
             <div className="graph">
-              <p>GRAPH</p>
+              <h5>GRAPH</h5>
               <Line data={data} />
             </div>
 
@@ -209,42 +209,48 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             {popup && <SavingsPopup />}
 
             <div className="savings-container">
-              <button className="add-btn" onClick={toggleAddSavings}>
-                +
-              </button>
+              <div>
+                <button className="add-btn" onClick={toggleAddSavings}>
+                  +
+                </button>
+              </div>
               {storedValue2?.map((savings) => (
                 <div className="savings">
-                  <button onClick={() => handleEditPopup(savings.id)}>
-                    Edit
-                  </button>
-                  <h4>{savings.category}</h4>
-                  <p>DEPOSIT: {savings.depositAmount}</p>
-                  <p>TARGET: {savings.targetAmount}</p>
-
-                  <div className="progress-bar">
-                    <div
-                      className="progress-bar-fill"
-                      style={{
-                        width:
-                          savings.depositAmount && savings.targetAmount
-                            ? `${
-                                (savings.depositAmount / savings.targetAmount) *
-                                100
-                              }%`
-                            : "0%",
-                      }}
-                    ></div>
-                    <h4>
-                      {savings.depositAmount && savings.targetAmount
-                        ? Math.round(
-                            (savings.depositAmount / savings.targetAmount) * 100
-                          )
-                        : 0}
-                      %
-                    </h4>
-                    <button onClick={() => removeItem("savings", savings.id)}>
-                      Delete
+                  <div>
+                    <button onClick={() => handleEditPopup(savings.id)}>
+                      Edit
                     </button>
+                    <h4>{savings.category}</h4>
+                    <p>DEPOSIT: {savings.depositAmount}</p>
+                    <p>TARGET: {savings.targetAmount}</p>
+
+                    <div className="progress-bar">
+                      <div
+                        className="progress-bar-fill"
+                        style={{
+                          width:
+                            savings.depositAmount && savings.targetAmount
+                              ? `${
+                                  (savings.depositAmount /
+                                    savings.targetAmount) *
+                                  100
+                                }%`
+                              : "0%",
+                        }}
+                      ></div>
+                      <h4>
+                        {savings.depositAmount && savings.targetAmount
+                          ? Math.round(
+                              (savings.depositAmount / savings.targetAmount) *
+                                100
+                            )
+                          : 0}
+                        %
+                      </h4>
+                      <button onClick={() => removeItem("savings", savings.id)}>
+                        Delete
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
