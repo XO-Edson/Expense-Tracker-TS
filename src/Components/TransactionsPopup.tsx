@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import useSupabase from "../Hooks/useSupabase";
-import DateTimePicker from "react-datetime-picker";
-import "react-datetime-picker/dist/DateTimePicker.css";
+import DatePicker from "react-date-picker";
+import "react-date-picker/dist/DatePicker.css";
+/*import "react-calendar/dist/Calendar.css"; */
 
 import { Savingstype } from "../SupabaseContext/Supabase";
 
@@ -110,7 +111,7 @@ const TransactionsPopup = () => {
   return (
     <div className="input-fields-background" onClick={togglePopup}>
       <article className="input-fields" onClick={handleInputClick}>
-        <div>
+        <div className="popup-buttons">
           <button onClick={toggleEntryField}>Income</button>
           <button onClick={toggleEntryField}>Expense</button>
         </div>
@@ -145,7 +146,7 @@ const TransactionsPopup = () => {
             />
 
             <div>
-              <DateTimePicker
+              <DatePicker
                 onChange={(newDate) =>
                   setEditData((prevEditData: any) => ({
                     ...prevEditData,
@@ -190,7 +191,7 @@ const TransactionsPopup = () => {
             />
             <h4>Date:</h4>
             <div>
-              <DateTimePicker
+              <DatePicker
                 onChange={(newDate) =>
                   entry
                     ? setIncome({ ...income, date: newDate })

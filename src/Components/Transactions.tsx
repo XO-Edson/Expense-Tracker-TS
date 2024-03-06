@@ -7,6 +7,10 @@ import { useEffect, useMemo } from "react";
 import { Savingstype } from "../SupabaseContext/Supabase";
 import Header from "./Header";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+
 export const Transactions = () => {
   const {
     balance,
@@ -43,6 +47,7 @@ export const Transactions = () => {
 
   useEffect(() => {
     setValue("transactions", allTransactions);
+
     console.log(storedValue1);
   }, [allTransactions]);
 
@@ -135,7 +140,7 @@ export const Transactions = () => {
                           handleEditPopup(row.original && row.original.id)
                         }
                       >
-                        edit
+                        <FontAwesomeIcon icon={faPenToSquare} />
                       </button>
                       <button
                         onClick={() =>
@@ -145,7 +150,7 @@ export const Transactions = () => {
                           )
                         }
                       >
-                        Delete
+                        <FontAwesomeIcon icon={faTrash} />
                       </button>
                     </div>
                   </tr>

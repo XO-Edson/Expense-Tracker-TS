@@ -5,6 +5,11 @@ import Sidebar from "./Sidebar";
 import { Line } from "react-chartjs-2";
 import SavingsPopup from "./SavingsPopup";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
+
 import {
   Chart,
   LineElement,
@@ -135,6 +140,8 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
     0
   );
 
+  const reversedArray = storedValue1.reverse();
+
   if (isLoading) {
     return <p>Loading...</p>;
   }
@@ -178,7 +185,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
               <h4>Recent Transactions</h4>
 
               <section className="transactions-display-dashboard">
-                {storedValue1.map((accTransactions: any, index: number) => (
+                {reversedArray.map((accTransactions: any, index: number) => (
                   <ul key={index}>
                     <li>
                       {accTransactions.incomeCategory ||
@@ -202,7 +209,16 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
           <article className="graph-column">
             <div className="graph">
               <h5>GRAPH</h5>
-              <Line data={data} />
+              <Line
+                data={data}
+                options={{
+                  plugins: {
+                    legend: {
+                      display: true,
+                    },
+                  },
+                }}
+              />
             </div>
 
             <h3 className="heading">Savings Plan</h3>
@@ -211,44 +227,52 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             <div className="savings-container">
               <div>
                 <button className="add-btn" onClick={toggleAddSavings}>
-                  +
+                  <FontAwesomeIcon icon={faPlus} />
                 </button>
               </div>
-              {storedValue2?.map((savings) => (
-                <div className="savings">
-                  <div>
+              {storedValue2?.map((savings, index) => (
+                <div key={index} className="savings">
+                  <div className="savings-header">
+                    <h3>{savings.category}</h3>
                     <button onClick={() => handleEditPopup(savings.id)}>
-                      Edit
+                      <FontAwesomeIcon icon={faPenToSquare} />
                     </button>
-                    <h4>{savings.category}</h4>
-                    <p>DEPOSIT: {savings.depositAmount}</p>
-                    <p>TARGET: {savings.targetAmount}</p>
+                  </div>
 
-                    <div className="progress-bar">
-                      <div
-                        className="progress-bar-fill"
-                        style={{
-                          width:
-                            savings.depositAmount && savings.targetAmount
-                              ? `${
-                                  (savings.depositAmount /
-                                    savings.targetAmount) *
+                  <div className="savings-body">
+                    <div>
+                      <p>DEPOSIT: {savings.depositAmount}</p>
+                      <p>TARGET: {savings.targetAmount}</p>
+
+                      <div className="progress-bar">
+                        <div
+                          className="progress-bar-fill"
+                          style={{
+                            width:
+                              savings.depositAmount && savings.targetAmount
+                                ? `${
+                                    (savings.depositAmount /
+                                      savings.targetAmount) *
+                                    100
+                                  }%`
+                                : "0%",
+                          }}
+                        ></div>
+                        <h4>
+                          {savings.depositAmount && savings.targetAmount
+                            ? Math.round(
+                                (savings.depositAmount / savings.targetAmount) *
                                   100
-                                }%`
-                              : "0%",
-                        }}
-                      ></div>
-                      <h4>
-                        {savings.depositAmount && savings.targetAmount
-                          ? Math.round(
-                              (savings.depositAmount / savings.targetAmount) *
-                                100
-                            )
-                          : 0}
-                        %
-                      </h4>
+                              )
+                            : 0}
+                          %
+                        </h4>
+                      </div>
+                    </div>
+
+                    <div>
                       <button onClick={() => removeItem("savings", savings.id)}>
-                        Delete
+                        <FontAwesomeIcon icon={faTrash} />
                       </button>
                     </div>
                   </div>

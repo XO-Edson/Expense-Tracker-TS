@@ -207,7 +207,7 @@ article {
   padding: 1rem;
   width: 100%;
 
-  margin-bottom: 1rem;
+  margin-bottom: 5rem;
 }
 
 .graph-column {
@@ -258,6 +258,16 @@ article {
   margin-top: 1rem;
 }
 
+.popup-buttons {
+  width: 100%;
+  display: flex;
+  column-gap: 0.5rem;
+}
+
+.popup-buttons button {
+  width: 100%;
+}
+
 .savings-container {
   min-width: 100%;
   padding: 1rem;
@@ -276,13 +286,29 @@ article {
 
 .savings {
   height: 180px;
-  width: 150px;
+  min-width: 150px;
 
   padding: 0.5rem;
-  background-color: gray;
+  background-color: rgb(213, 209, 209);
   color: black;
   border-radius: 10px;
   margin-left: 1rem;
+}
+
+.savings button {
+  display: block;
+}
+
+.savings-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.savings-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 75%;
 }
 
 .savings-container .add-btn {
