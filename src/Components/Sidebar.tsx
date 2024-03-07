@@ -25,7 +25,6 @@ const Sidebar = ({ userEmail }: DashboardHeaderProps) => {
           <button onClick={() => navigate("/transactions")}>
             Transactions
           </button>
-          <button onClick={() => navigate("/statistics")}>Statistics</button>
         </div>
 
         <button onClick={logOut}>Log Out</button>
