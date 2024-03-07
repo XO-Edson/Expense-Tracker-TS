@@ -6,20 +6,20 @@ import { useEffect, useState } from "react";
 import useSupabase from "./Hooks/useSupabase";
 
 function App() {
-  const [user, setUser] = useState<any>("Guest");
+  const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const { supabase } = useSupabase();
 
   const navigate = useNavigate();
 
   useEffect(() => {
+    setUser("Guest");
+
     const getUserData = async () => {
       try {
         const { data, error } = await supabase.auth.getUser();
         if (error) {
           console.error("Error fetching user data:", error);
-        } else if (user === "Guest") {
-          setUser("Guest");
         } else if (data?.user) {
           setUser(data.user);
         }
