@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import useSupabase from "./Hooks/useSupabase";
 
 function App() {
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<any>("Guest");
   const [isLoading, setIsLoading] = useState(true);
   const { supabase } = useSupabase();
 
@@ -18,6 +18,8 @@ function App() {
         const { data, error } = await supabase.auth.getUser();
         if (error) {
           console.error("Error fetching user data:", error);
+        } else if (user === "Guest") {
+          setUser("Guest");
         } else if (data?.user) {
           setUser(data.user);
         }
@@ -40,7 +42,7 @@ function App() {
           path="/dashboard"
           element={<Dashboard user={user} isLoading={isLoading} />}
         />
-        <Route path="/transactions" element={<Transactions user={user} />} />
+        <Route path="/transactions" element={<Transactions />} />
       </Routes>
     </>
   );
