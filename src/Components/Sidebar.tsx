@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import useSupabase from "../Hooks/useSupabase";
 
 type DashboardHeaderProps = {
   userEmail: string;
@@ -7,10 +6,8 @@ type DashboardHeaderProps = {
 
 const Sidebar = ({ userEmail }: DashboardHeaderProps) => {
   const navigate = useNavigate();
-  const { supabase } = useSupabase();
 
   const logOut = () => {
-    supabase.auth.signOut();
     navigate("/");
   };
 
@@ -21,7 +18,7 @@ const Sidebar = ({ userEmail }: DashboardHeaderProps) => {
           <p>{userEmail}</p>
         </div>
         <div className="navigation">
-          <button onClick={() => navigate("/dashboard")}>Dashboard</button>
+          <button onClick={() => navigate("/")}>Dashboard</button>
           <button onClick={() => navigate("/transactions")}>
             Transactions
           </button>

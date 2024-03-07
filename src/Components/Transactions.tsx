@@ -16,7 +16,7 @@ import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
 
 Chart.register(ArcElement, Tooltip, Legend);
 
-export const Transactions = () => {
+export const Transactions = ({ user }: any) => {
   const {
     balance,
     togglePopup,
@@ -74,7 +74,7 @@ export const Transactions = () => {
   return (
     <main>
       <Header />
-      <Sidebar userEmail={""} />
+      <Sidebar userEmail={user} />
 
       <section className="transactions">
         <h2>TRANSACTIONS</h2>

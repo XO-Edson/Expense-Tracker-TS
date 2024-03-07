@@ -1,13 +1,11 @@
-import SignUpUI from "./Components/SignUpUI";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Transactions } from "./Components/Transactions";
 import Dashboard from "./Components/Dashboard";
-import { useEffect, useState } from "react";
-import useSupabase from "./Hooks/useSupabase";
+import { useState } from "react";
 
 function App() {
-  const [user, setUser] = useState<any>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [user] = useState<any>("Guest");
+  /*  const [isLoading, setIsLoading] = useState(true);
   const { supabase } = useSupabase();
 
   const navigate = useNavigate();
@@ -31,18 +29,14 @@ function App() {
     };
 
     getUserData();
-  }, [navigate, supabase.auth]);
+  }, [navigate, supabase.auth]); */
 
   return (
     <>
       <Routes>
-        <Route path="/" element={<SignUpUI setUser={setUser} />} />
-
-        <Route
-          path="/dashboard"
-          element={<Dashboard user={user} isLoading={isLoading} />}
-        />
-        <Route path="/transactions" element={<Transactions />} />
+        <Route path="/" element={<Dashboard user={user} />} />
+        <Route path="/transactions" element={<Transactions user={user} />} />
+        <Route path="*" element={<Dashboard user={user} />} />
       </Routes>
     </>
   );

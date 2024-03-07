@@ -1,5 +1,5 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
-import { SupabaseClient, createClient } from "@supabase/supabase-js";
+import { ReactNode, createContext, useState } from "react";
+//import { SupabaseClient, createClient } from "@supabase/supabase-js";
 import { v4 as uuidv4 } from "uuid";
 
 type SupaBaseProviderProps = {
@@ -30,7 +30,7 @@ export type Savingstype = {
 type TransactionType = IncomeType | ExpenseType;
 
 type ContextProps = {
-  supabase: SupabaseClient;
+  // supabase: SupabaseClient;
   balance: (incomes: any, exoenses: any) => number;
   addExp: (incomes: any, expenses: any) => void;
   accExpenses: ExpenseType[];
@@ -63,14 +63,14 @@ export const SupabaseContext = createContext<ContextProps | undefined>(
 );
 
 export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
-  const supabase = createClient(
+  /* const supabase = createClient(
     "https://dlqwbcnampbxxuowszdl.supabase.co",
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRscXdiY25hbXBieHh1b3dzemRsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDU2NTMwMjQsImV4cCI6MjAyMTIyOTAyNH0.aic0gbTZB4xzclit1TefvdTan9XgNRu5RHpRp0OjBs0"
   );
+ */
+  const [user] = useState<any>();
 
-  const [user, setUser] = useState<any>();
-
-  useEffect(() => {
+  /*  useEffect(() => {
     const getUserData = async () => {
       try {
         const { data, error } = await supabase.auth.getUser();
@@ -87,7 +87,7 @@ export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     };
 
     getUserData();
-  }, []);
+  }, []); */
 
   const [income, setIncome] = useState<IncomeType>({
     id: uuidv4(),
@@ -175,7 +175,7 @@ export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
   return (
     <SupabaseContext.Provider
       value={{
-        supabase,
+        /*  supabase, */
         balance,
         addExp,
         accExpenses,

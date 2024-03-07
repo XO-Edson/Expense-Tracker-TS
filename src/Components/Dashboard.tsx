@@ -22,10 +22,10 @@ Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 type DashboardProps = {
   user: any;
-  isLoading: boolean;
+  //isLoading: boolean;
 };
 
-const Dashboard = ({ user, isLoading }: DashboardProps) => {
+const Dashboard = ({ user /* isLoading */ }: DashboardProps) => {
   const { popup, accSavings, allTransactions } = useSupabase();
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
@@ -103,10 +103,10 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
 
   const reversedArray = storedValue1.reverse();
 
-  if (isLoading) {
+  /*  if (isLoading) {
     return <p>Loading...</p>;
   }
-
+ */
   return (
     <>
       {!user ? (
