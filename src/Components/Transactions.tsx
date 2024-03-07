@@ -50,12 +50,8 @@ export const Transactions = ({ user }: TransactionsProps) => {
     .filter((values) => values.expenseCategory)
     .reduce((total, obj) => total + obj.amount, 0);
 
-  console.log(allTransactions);
-
   useEffect(() => {
     setValue("transactions", allTransactions);
-
-    console.log(storedValue1);
   }, [allTransactions]);
 
   useEffect(() => {

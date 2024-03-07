@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Savingstype } from "../SupabaseContext/Supabase";
 import useSupabase from "../Hooks/useSupabase";
 import { v4 as uuidv4 } from "uuid";
@@ -25,8 +25,6 @@ const SavingsPopup = () => {
     initializedAccSavings
   );
 
-  console.log(accSavings);
-
   const handleInputClick = (e: any) => {
     e.stopPropagation(); // Prevent click event from propagating to the background
   };
@@ -41,23 +39,14 @@ const SavingsPopup = () => {
   function addSavings() {
     setAccSavings((prevAcc: any) => [...(prevAcc || []), { ...savings }]);
     togglePopup();
-    console.log(accSavings);
   }
 
-  useEffect(() => {
-    console.log("Updated editData:", editSavings);
-  }, [editSavings]);
-
-  console.log(edit);
   const handleAddOrEdit = () => {
     if (edit) {
       // Find the index of the entry to be edited
       const indexToEdit = storedValue2.findIndex(
         (value: { id: any }) => value.id === editSavings.id
       );
-
-      console.log("Index to edit:", indexToEdit);
-      console.log("Edit data:", editSavings);
 
       if (indexToEdit !== -1) {
         // Retrieve existing data from localStorage
@@ -92,10 +81,6 @@ const SavingsPopup = () => {
       addSavings();
     }
   };
-
-  useEffect(() => {
-    console.log("Stored Value:", storedValue2);
-  }, [storedValue2]); // Log storedValue after it's updated
 
   return (
     <div>

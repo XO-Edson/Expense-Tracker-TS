@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import useSupabase from "../Hooks/useSupabase";
 import DatePicker from "react-date-picker";
@@ -51,10 +50,6 @@ const TransactionsPopup = () => {
     setEntry((prev: any) => !prev);
   };
 
-  useEffect(() => {
-    console.log("Updated editData:", editData);
-  }, [editData]);
-
   const handleAddOrEdit = () => {
     if (edit) {
       // Find the index of the entry to be edited
@@ -97,16 +92,8 @@ const TransactionsPopup = () => {
       console.log(edit);
 
       addExp(incomes, expenses);
-
-      // Edit existing data
-      // Call the appropriate function to edit data using editData state
-      // Reset input fields or close the popup after editing
     }
   };
-
-  useEffect(() => {
-    console.log("Stored Value:", storedValue1);
-  }, [storedValue1]); // Log storedValue after it's updated
 
   return (
     <div className="input-fields-background" onClick={togglePopup}>

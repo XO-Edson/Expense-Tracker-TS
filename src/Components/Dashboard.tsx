@@ -39,7 +39,6 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
 
   useEffect(() => {
     setValue("savings", initializedAccSavings);
-    console.log(storedValue1);
   }, [accSavings]);
 
   const formatDate = (date: Date) => {
