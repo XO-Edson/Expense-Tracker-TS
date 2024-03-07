@@ -118,7 +118,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
       ) : (
         <main>
           <Header />
-          <Sidebar userEmail={user.email} />
+          <Sidebar userEmail={user.email || user} />
 
           <article>
             <h2>Dashboard</h2>

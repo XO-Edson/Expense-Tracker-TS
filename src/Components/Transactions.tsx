@@ -82,7 +82,7 @@ export const Transactions = ({ user }: TransactionsProps) => {
   return (
     <main>
       <Header />
-      <Sidebar userEmail={user.email} />
+      <Sidebar userEmail={user.email || user} />
 
       <section className="transactions">
         <h2>TRANSACTIONS</h2>
