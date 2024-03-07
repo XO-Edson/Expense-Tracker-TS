@@ -18,7 +18,7 @@ const SavingsPopup = () => {
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue2, setStoredValue2, clear } = useLocalStorage(
+  const { storedValue2, setStoredValue2 } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
@@ -88,12 +88,8 @@ const SavingsPopup = () => {
       }
     } else {
       setEdit(false);
-      console.log(edit);
-      addSavings();
 
-      // Edit existing data
-      // Call the appropriate function to edit data using editData state
-      // Reset input fields or close the popup after editing
+      addSavings();
     }
   };
 

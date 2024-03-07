@@ -5,11 +5,11 @@ import Sidebar from "./Sidebar";
 import { Line } from "react-chartjs-2";
 import SavingsPopup from "./SavingsPopup";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
-
+import { Savingstype } from "../SupabaseContext/Supabase";
+import { useEffect } from "react";
+import Header from "./Header";
+import Card from "./Card";
+import SavingsPlan from "./SavingsPlan";
 import {
   Chart,
   LineElement,
@@ -17,9 +17,6 @@ import {
   LinearScale,
   PointElement,
 } from "chart.js";
-import { Savingstype } from "../SupabaseContext/Supabase";
-import { useEffect } from "react";
-import Header from "./Header";
 
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
@@ -29,42 +26,21 @@ type DashboardProps = {
 };
 
 const Dashboard = ({ user, isLoading }: DashboardProps) => {
-  const {
-    balance,
-    togglePopup,
-    popup,
-    accSavings,
-    allTransactions,
-    setEdit,
-    setEditSavings,
-  } = useSupabase();
+  const { popup, accSavings, allTransactions } = useSupabase();
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue1, storedValue2, setValue, removeItem } = useLocalStorage(
+  const { storedValue1, setValue } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
     initializedAccSavings
   );
 
-  function toggleAddSavings() {
-    togglePopup();
-    setEdit(false);
-  }
-
   useEffect(() => {
     setValue("savings", initializedAccSavings);
     console.log(storedValue1);
   }, [accSavings]);
-
-  const incomes = storedValue1
-    .filter((values) => values.incomeCategory)
-    .reduce((total, obj) => total + obj.amount, 0);
-
-  const expenses = storedValue1
-    .filter((values) => values.expenseCategory)
-    .reduce((total, obj) => total + obj.amount, 0);
 
   const formatDate = (date: Date) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -77,20 +53,6 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
   const formattedLabels = storedValue1.map((transactions) =>
     formatDate(transactions.date)
   );
-
-  function handleEditPopup(entryId: any) {
-    const selectedEntry = storedValue2.find(
-      (value: { id: any }) => value.id === entryId
-    );
-
-    if (selectedEntry) {
-      console.log(selectedEntry);
-
-      setEditSavings({ ...selectedEntry });
-
-      togglePopup();
-    }
-  }
 
   const data = {
     labels: formattedLabels,
@@ -162,12 +124,7 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             <h2>Dashboard</h2>
 
             {/* Card Column */}
-            <div className="card">
-              <h5>Available Balance</h5>
-
-              <h1>$ {balance(incomes, expenses)}</h1>
-              <p>**** 1234</p>
-            </div>
+            <Card />
 
             <div className="summary">
               <div className="income">
@@ -224,60 +181,8 @@ const Dashboard = ({ user, isLoading }: DashboardProps) => {
             <h3 className="heading">Savings Plan</h3>
             {popup && <SavingsPopup />}
 
-            <div className="savings-container">
-              <div>
-                <button className="add-btn" onClick={toggleAddSavings}>
-                  <FontAwesomeIcon icon={faPlus} />
-                </button>
-              </div>
-              {storedValue2?.map((savings, index) => (
-                <div key={index} className="savings">
-                  <div className="savings-header">
-                    <h3>{savings.category}</h3>
-                    <button onClick={() => handleEditPopup(savings.id)}>
-                      <FontAwesomeIcon icon={faPenToSquare} />
-                    </button>
-                  </div>
-
-                  <div className="savings-body">
-                    <div>
-                      <p>DEPOSIT: {savings.depositAmount}</p>
-                      <p>TARGET: {savings.targetAmount}</p>
-
-                      <div className="progress-bar">
-                        <div
-                          className="progress-bar-fill"
-                          style={{
-                            width:
-                              savings.depositAmount && savings.targetAmount
-                                ? `${
-                                    (savings.depositAmount /
-                                      savings.targetAmount) *
-                                    100
-                                  }%`
-                                : "0%",
-                          }}
-                        ></div>
-                        <h4>
-                          {savings.depositAmount && savings.targetAmount
-                            ? Math.round(
-                                (savings.depositAmount / savings.targetAmount) *
-                                  100
-                              )
-                            : 0}
-                          %
-                        </h4>
-                      </div>
-                    </div>
-
-                    <div>
-                      <button onClick={() => removeItem("savings", savings.id)}>
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
+            <div>
+              <SavingsPlan />
             </div>
           </article>
         </main>

@@ -4,11 +4,16 @@ import { Auth } from "@supabase/auth-ui-react";
 import { useEffect } from "react";
 import Header from "./Header";
 
-const SignUpUI = () => {
+type SetUserProp = {
+  setUser: any;
+};
+
+const SignUpUI = ({ setUser }: SetUserProp) => {
   const navigate = useNavigate();
   const { supabase } = useSupabase();
 
   const guestSignIn = () => {
+    setUser("Guest");
     navigate("/dashboard");
   };
 

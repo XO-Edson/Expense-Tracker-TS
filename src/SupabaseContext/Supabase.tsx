@@ -44,7 +44,7 @@ type ContextProps = {
   setAllTransactions: (e: any) => void;
   togglePopup: () => void;
   popup: boolean;
-  tableData: any;
+
   entry: Boolean;
   setEntry: (e: any) => void;
   accSavings?: Savingstype[];
@@ -122,8 +122,6 @@ export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
 
   const [popup, setPopup] = useState<boolean>(false);
 
-  const [tableData, setTableData] = useState<any>([]);
-
   const [entry, setEntry] = useState<boolean>(false);
 
   const [edit, setEdit] = useState<boolean>(true);
@@ -155,29 +153,6 @@ export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
     setAllTransactions(filteredTransactions);
 
     const newId = uuidv4();
-
-    const newTransaction = {
-      id: newId,
-
-      amount:
-        income.amount !== undefined
-          ? income.amount
-          : expense.amount !== undefined
-          ? expense.amount
-          : 0,
-
-      category:
-        income.incomeCategory !== ""
-          ? income.incomeCategory
-          : expense.expenseCategory !== ""
-          ? expense.expenseCategory
-          : "",
-
-      date: income.date || expense.date,
-    };
-
-    // Update tableData with the new transaction
-    setTableData([...tableData, newTransaction]);
 
     console.log(allTransactions);
     setIncome({
@@ -214,7 +189,7 @@ export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         setAllTransactions,
         togglePopup,
         popup,
-        tableData,
+
         entry,
         setEntry,
         accSavings,

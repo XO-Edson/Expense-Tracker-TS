@@ -2,16 +2,25 @@ import useLocalStorage from "../Hooks/useLocalStorage";
 import useSupabase from "../Hooks/useSupabase";
 import Sidebar from "./Sidebar";
 import TransactionsPopup from "./TransactionsPopup";
-import { useTable } from "react-table";
-import { useEffect, useMemo } from "react";
+
+import { useEffect } from "react";
 import { Savingstype } from "../SupabaseContext/Supabase";
 import Header from "./Header";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import Card from "./Card";
+import TransactionsTable from "./TransactionsTable";
 
-export const Transactions = () => {
+import { Doughnut } from "react-chartjs-2";
+
+import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+
+Chart.register(ArcElement, Tooltip, Legend);
+
+type TransactionsProps = {
+  user: any;
+};
+
+export const Transactions = ({ user }: TransactionsProps) => {
   const {
     balance,
     togglePopup,
@@ -20,20 +29,18 @@ export const Transactions = () => {
     allTransactions,
 
     setEdit,
-    setEditData,
+
     accSavings,
   } = useSupabase();
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue1, setValue, clear, removeItem } = useLocalStorage(
+  const { storedValue1, setValue } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
     initializedAccSavings
   );
-
-  console.log(storedValue1);
 
   const incomes = storedValue1
     .filter((values) => values.incomeCategory)
@@ -51,122 +58,48 @@ export const Transactions = () => {
     console.log(storedValue1);
   }, [allTransactions]);
 
-  function handleEditPopup(entryId: any) {
-    const selectedEntry = storedValue1.find(
-      (value: { id: any }) => value.id === entryId
-    );
-
-    if (selectedEntry) {
-      console.log(selectedEntry);
-
-      setEditData({ ...selectedEntry });
-
-      togglePopup();
-    }
-  }
+  useEffect(() => {
+    console.log(storedValue1);
+  }, [storedValue1]);
 
   function toggleAddtransaction() {
     togglePopup();
     setEdit(false);
   }
 
-  const data = storedValue1;
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({
-      data,
-      columns: useMemo(
-        () => [
-          {
-            Header: "Amount",
-            accessor: "amount",
-          },
-          {
-            Header: "Category",
-            accessor: (row: any) =>
-              `${row.incomeCategory || ""}${
-                row.expenseCategory ? ` ${row.expenseCategory}` : ""
-              }`,
-            Cell: ({ value }: { value: string }) => <span>{value}</span>,
-          },
-          {
-            Header: "Date",
-            accessor: "date",
-            Cell: ({ value }: any) => (
-              <span>{new Date(value).toLocaleDateString()}</span>
-            ),
-          },
-        ],
-        []
-      ),
-    });
+  const data = {
+    labels: ["Income", "expense"],
+    datasets: [
+      {
+        label: "Summary",
+        data: [incomes, expenses],
+        backgroundColor: ["green", "red"],
+        borderColor: ["green", "red"],
+      },
+    ],
+  };
 
   return (
     <main>
       <Header />
-      <Sidebar userEmail={""} />
+      <Sidebar userEmail={user.email} />
 
       <section className="transactions">
         <h2>TRANSACTIONS</h2>
         <button onClick={toggleAddtransaction}>Add Transaction</button>
         {popup && <TransactionsPopup />}
 
-        <h5>Balance: {balance(incomes, expenses)}</h5>
+        <h4>Balance: {balance(incomes, expenses)}</h4>
 
-        <section className="transactions-display">
-          <table {...getTableProps()}>
-            <thead>
-              {headerGroups.map((headerGroup) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
-                  {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()}>
-                      {column.render("Header")}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-              {rows.map((row) => {
-                prepareRow(row);
-                return (
-                  <tr {...row.getRowProps()}>
-                    {row.cells.map((cell) => (
-                      <td {...cell.getCellProps()}>{cell.render("Cell")} </td>
-                    ))}
-                    <div className="table-buttons">
-                      <button
-                        onClick={() =>
-                          handleEditPopup(row.original && row.original.id)
-                        }
-                      >
-                        <FontAwesomeIcon icon={faPenToSquare} />
-                      </button>
-                      <button
-                        onClick={() =>
-                          removeItem(
-                            "transactions",
-                            row.original && row.original.id
-                          )
-                        }
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </button>
-                    </div>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </section>
+        <div className="transactions-display">
+          <TransactionsTable />
+        </div>
       </section>
 
       <section className="transactions-card">
-        <div className="card">
-          <h5>Available Balance</h5>
-
-          <h1>$ {balance(incomes, expenses)}</h1>
-          <p>**** 1234</p>
+        <Card />
+        <div className="doughnut-chart">
+          <Doughnut data={data} />
         </div>
       </section>
     </main>

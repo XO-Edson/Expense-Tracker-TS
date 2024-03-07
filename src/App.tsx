@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import useSupabase from "./Hooks/useSupabase";
 
 function App() {
-  const [user, setUser] = useState<any>("e");
+  const [user, setUser] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const { supabase } = useSupabase();
 
@@ -34,13 +34,13 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<SignUpUI />} />
+        <Route path="/" element={<SignUpUI setUser={setUser} />} />
 
         <Route
           path="/dashboard"
           element={<Dashboard user={user} isLoading={isLoading} />}
         />
-        <Route path="/transactions" element={<Transactions />} />
+        <Route path="/transactions" element={<Transactions user={user} />} />
       </Routes>
     </>
   );
