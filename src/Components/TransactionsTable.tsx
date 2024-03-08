@@ -6,7 +6,7 @@ import { useTable } from "react-table";
 import useSupabase from "../Hooks/useSupabase";
 import { Savingstype } from "../SupabaseContext/Supabase";
 import useLocalStorage from "../Hooks/useLocalStorage";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 const TransactionsTable = () => {
   const { setEditData, togglePopup, allTransactions, accSavings } =
@@ -14,7 +14,7 @@ const TransactionsTable = () => {
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue1, removeItem } = useLocalStorage(
+  const { storedValue1, removeItem, setValue } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
@@ -64,6 +64,10 @@ const TransactionsTable = () => {
         []
       ),
     });
+
+  useEffect(() => {
+    setValue("transactions", allTransactions);
+  }, [allTransactions]);
 
   return (
     <table {...getTableProps()}>

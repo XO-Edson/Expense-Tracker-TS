@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import useLocalStorage from "../Hooks/useLocalStorage";
 import useSupabase from "../Hooks/useSupabase";
 import { Savingstype } from "../SupabaseContext/Supabase";
@@ -7,7 +8,7 @@ const Card = () => {
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue1 } = useLocalStorage(
+  const { storedValue1, setValue } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
@@ -21,6 +22,10 @@ const Card = () => {
   const expenses = storedValue1
     .filter((values) => values.expenseCategory)
     .reduce((total, obj) => total + obj.amount, 0);
+
+  useEffect(() => {
+    setValue("transactions", allTransactions);
+  }, [allTransactions]);
 
   return (
     <div>

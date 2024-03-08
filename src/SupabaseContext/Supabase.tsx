@@ -189,17 +189,14 @@ export const SupabaseProvider = ({ children }: SupaBaseProviderProps) => {
         setAllTransactions,
         togglePopup,
         popup,
-
         entry,
         setEntry,
         accSavings,
         setAccSavings,
         editData,
         setEditData,
-
         edit,
         setEdit,
-
         editSavings,
         setEditSavings,
       }}

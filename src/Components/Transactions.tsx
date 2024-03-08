@@ -3,7 +3,6 @@ import useSupabase from "../Hooks/useSupabase";
 import Sidebar from "./Sidebar";
 import TransactionsPopup from "./TransactionsPopup";
 
-import { useEffect } from "react";
 import { Savingstype } from "../SupabaseContext/Supabase";
 import Header from "./Header";
 
@@ -13,21 +12,13 @@ import TransactionsTable from "./TransactionsTable";
 import { Doughnut } from "react-chartjs-2";
 
 import { Chart, ArcElement, Tooltip, Legend } from "chart.js";
+import { useEffect } from "react";
 
 Chart.register(ArcElement, Tooltip, Legend);
 
 export const Transactions = ({ user }: any) => {
-  const {
-    balance,
-    togglePopup,
-    popup,
-
-    allTransactions,
-
-    setEdit,
-
-    accSavings,
-  } = useSupabase();
+  const { balance, togglePopup, popup, allTransactions, setEdit, accSavings } =
+    useSupabase();
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
@@ -46,14 +37,6 @@ export const Transactions = ({ user }: any) => {
     .filter((values) => values.expenseCategory)
     .reduce((total, obj) => total + obj.amount, 0);
 
-  useEffect(() => {
-    setValue("transactions", allTransactions);
-  }, [allTransactions]);
-
-  useEffect(() => {
-    console.log(storedValue1);
-  }, [storedValue1]);
-
   function toggleAddtransaction() {
     togglePopup();
     setEdit(false);
@@ -70,6 +53,10 @@ export const Transactions = ({ user }: any) => {
       },
     ],
   };
+
+  useEffect(() => {
+    setValue("transactions", allTransactions);
+  }, [allTransactions]);
 
   return (
     <main>

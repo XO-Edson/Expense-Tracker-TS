@@ -18,7 +18,7 @@ const Sidebar = ({ userEmail }: DashboardHeaderProps) => {
           <p>{userEmail}</p>
         </div>
         <div className="navigation">
-          <button onClick={() => navigate("/")}>Dashboard</button>
+          <button onClick={() => navigate("/dashboard")}>Dashboard</button>
           <button onClick={() => navigate("/transactions")}>
             Transactions
           </button>

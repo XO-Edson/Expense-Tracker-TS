@@ -57,9 +57,6 @@ const TransactionsPopup = () => {
         (value: { id: any }) => value.id === editData.id
       );
 
-      console.log("Index to edit:", indexToEdit);
-      console.log("Edit data:", editData);
-
       if (indexToEdit !== -1) {
         // Retrieve existing data from localStorage
         const existingDataString = localStorage.getItem("transactions");
@@ -74,13 +71,12 @@ const TransactionsPopup = () => {
 
         // Update localStorage with the updated data
         localStorage.setItem("transactions", JSON.stringify(updatedData));
-        console.log("Local storage updated.");
 
         // Update the storedValue state with the updated data
         setStoredValue1((prevStoredValue) => {
           const updatedStoredValue = [...prevStoredValue];
           updatedStoredValue[indexToEdit] = editData;
-          console.log("Updated stored value:", updatedStoredValue);
+
           return updatedStoredValue;
         });
 

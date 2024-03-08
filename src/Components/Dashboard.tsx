@@ -6,7 +6,6 @@ import { Line } from "react-chartjs-2";
 import SavingsPopup from "./SavingsPopup";
 
 import { Savingstype } from "../SupabaseContext/Supabase";
-import { useEffect } from "react";
 import Header from "./Header";
 import Card from "./Card";
 import SavingsPlan from "./SavingsPlan";
@@ -22,24 +21,19 @@ Chart.register(LineElement, CategoryScale, LinearScale, PointElement);
 
 type DashboardProps = {
   user: any;
-  //isLoading: boolean;
 };
 
-const Dashboard = ({ user /* isLoading */ }: DashboardProps) => {
+const Dashboard = ({ user }: DashboardProps) => {
   const { popup, accSavings, allTransactions } = useSupabase();
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue1, setValue } = useLocalStorage(
+  const { storedValue1 } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
     initializedAccSavings
   );
-
-  useEffect(() => {
-    setValue("savings", initializedAccSavings);
-  }, [accSavings]);
 
   const formatDate = (date: Date) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", {
@@ -117,7 +111,7 @@ const Dashboard = ({ user /* isLoading */ }: DashboardProps) => {
       ) : (
         <main>
           <Header />
-          <Sidebar userEmail={user.email || user} />
+          <Sidebar userEmail={user} />
 
           <article>
             <h2>Dashboard</h2>

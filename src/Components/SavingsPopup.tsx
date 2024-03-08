@@ -18,7 +18,7 @@ const SavingsPopup = () => {
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue2, setStoredValue2 } = useLocalStorage(
+  const { storedValue2, setStoredValue2, setValue } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
@@ -76,6 +76,7 @@ const SavingsPopup = () => {
         togglePopup();
       }
     } else {
+      setValue("savings", initializedAccSavings);
       setEdit(false);
 
       addSavings();
@@ -99,11 +100,11 @@ const SavingsPopup = () => {
               <h3>Target amount</h3>
               <input
                 type="number"
-                value={editSavings?.targetAmount}
+                value={editSavings.targetAmount}
                 onChange={(e) =>
                   setEditSavings({
                     ...editSavings,
-                    targetAmount: parseInt(e.target.value, 10) || undefined,
+                    targetAmount: parseInt(e.target.value, 10),
                   })
                 }
               />
@@ -111,11 +112,11 @@ const SavingsPopup = () => {
               <h3>Deposit Amount</h3>
               <input
                 type="number "
-                value={editSavings?.depositAmount}
+                value={editSavings.depositAmount}
                 onChange={(e) =>
                   setEditSavings({
                     ...editSavings,
-                    depositAmount: parseInt(e.target.value, 10) || undefined,
+                    depositAmount: parseInt(e.target.value, 10),
                   })
                 }
               />
@@ -127,7 +128,7 @@ const SavingsPopup = () => {
               <h3>Category</h3>
               <input
                 type="text"
-                value={savings?.category}
+                value={savings.category || ""}
                 onChange={(e) =>
                   setSavings({ ...savings, category: e.target.value })
                 }
@@ -135,11 +136,11 @@ const SavingsPopup = () => {
               <h3>Target amount</h3>
               <input
                 type="number"
-                value={savings?.targetAmount}
+                value={savings.targetAmount || ""}
                 onChange={(e) =>
                   setSavings({
                     ...savings,
-                    targetAmount: parseInt(e.target.value, 10) || undefined,
+                    targetAmount: parseInt(e.target.value, 10),
                   })
                 }
               />
@@ -147,11 +148,11 @@ const SavingsPopup = () => {
               <h3>Deposit Amount</h3>
               <input
                 type="number "
-                value={savings?.depositAmount}
+                value={savings.depositAmount || ""}
                 onChange={(e) =>
                   setSavings({
                     ...savings,
-                    depositAmount: parseInt(e.target.value, 10) || undefined,
+                    depositAmount: parseInt(e.target.value, 10),
                   })
                 }
               />

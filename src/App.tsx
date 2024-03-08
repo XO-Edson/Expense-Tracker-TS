@@ -34,7 +34,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Dashboard user={user} />} />
+        <Route path="/dashboard" element={<Dashboard user={user} />} />
         <Route path="/transactions" element={<Transactions user={user} />} />
         <Route path="*" element={<Dashboard user={user} />} />
       </Routes>

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
+import { useEffect } from "react";
 
 const SavingsPlan = () => {
   const { allTransactions, accSavings, setEditSavings, togglePopup, setEdit } =
@@ -13,7 +14,7 @@ const SavingsPlan = () => {
 
   const initializedAccSavings: Savingstype[] = accSavings || [];
 
-  const { storedValue2, removeItem } = useLocalStorage(
+  const { storedValue2, removeItem, setValue } = useLocalStorage(
     "transactions",
     allTransactions,
     "savings",
@@ -38,6 +39,10 @@ const SavingsPlan = () => {
     togglePopup();
     setEdit(false);
   }
+
+  useEffect(() => {
+    setValue("savings", initializedAccSavings);
+  }, [accSavings]);
 
   return (
     <div className="savings-container">
